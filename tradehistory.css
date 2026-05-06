@@ -1,0 +1,329 @@
+
+
+/*** Wallet ***/
+
+#action-modal {
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+:root {
+    --bg-color: #0b0e11;
+    --card-bg: #1e2329;
+    --text-color: #eaecef;
+    --accent-blue: #3b82f6;
+}
+
+body.light-mode {
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-color: #111827;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Button အားလုံးကို အပြာရောင်ပြောင်းခြင်း */
+button.bg-yellow-500 {
+    background-color: var(--accent-blue) !important;
+    color: white !important;
+}
+
+button.bg-yellow-500:hover {
+    background-color: #2563eb !important;
+}
+
+/* Scrollbar အပြာရောင် */
+.custom-select::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+}
+
+/* Chart Container */
+canvas#assetChart {
+    max-width: 100% !important;
+}
+
+
+/* Animation for Modals */
+.animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Custom Styled Select */
+select option {
+    background-color: #1e2329;
+    color: white;
+    padding: 10px;
+}
+
+/* Action icons hover effect */
+.fa-copy:active {
+    transform: scale(1.2);
+    color: #3b82f6;
+}
+
+/* Table အကျယ်ကို Page Layout နဲ့ ညှိခြင်း */
+.overflow-x-auto {
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap; /* စာသားတွေ မဆံ့ရင် အောက်မဆင်းဘဲ Scroll လုပ်နိုင်အောင် */
+}
+
+/* Scrollbar styling for coin list */
+#transfer-coin-list::-webkit-scrollbar {
+    width: 4px;
+}
+#transfer-coin-list::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+/* Transfer Inputs height adjustment */
+#trans-amount, #trans-usdt {
+    height: 48px !important; /* height ကို fixed ထားပြီး ညီအောင်လုပ်ခြင်း */
+    box-sizing: border-box;
+}
+
+/* Withdraw & Transfer Inputs height adjustment */
+#wd-amount-coin, #wd-amount-usdt, 
+#trans-amount, #trans-usdt {
+    height: 48px !important;
+    box-sizing: border-box;
+}
+
+#historySearch {
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+#historySearch:focus {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+/* Table Scroll အဆင်ပြေစေရန် */
+.overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 transparent;
+}
+
+/* Mobile မှာ Card padding လျှော့ရန် */
+@media (max-width: 640px) {
+    .portfolio-card {
+        padding: 1rem;
+    }
+    h2.text-3xl {
+        font-size: 1.5rem;
+    }
+}
+
+/* Tab Buttons Hover Effect */
+.tab-btn {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Staking Card Animation */
+.wallet-section {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Tab ခလုတ်များ စာလုံးအရွယ်အစား လျှော့ရန် */
+    .tab-btn {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Fiat card အတွင်းရှိ Button များကို Grid ချရန် */
+    .wallet-section .grid-cols-3 {
+        
+        display: grid;
+        width: 100%;
+    }
+    
+    /* Table များကို ဖုန်းမှာ ဘေးတိုက်ဆွဲကြည့်နိုင်အောင် လုပ်ခြင်း */
+    .overflow-x-auto {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+}
+
+/* Toast Notification Style */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    background: #1e2329;
+    color: white;
+    padding: 16px 24px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    border-left: 5px solid #3b82f6;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    animation: slideInRight 0.3s ease-out forwards;
+}
+
+.toast.success { border-left-color: #10b981; }
+.toast.error { border-left-color: #ef4444; }
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Table Row Hover & Click Style */
+#historyContainer tr.cursor-pointer:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+    transition: background 0.2s;
+}
+
+/* Table ကို Scroll လုပ်လို့ရအောင် ပြင်ဆင်ခြင်း */
+.history-table-container {
+    max-height: 400px; /* သင်ထားချင်တဲ့ အမြင့်ကို ဒီမှာ ပြောင်းနိုင်ပါတယ် */
+    overflow-y: auto;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 transparent;
+}
+
+/* Scrollbar ပုံစံကို ပိုလှအောင် လုပ်ခြင်း */
+.history-table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.history-table-container::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.history-table-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Table Header ကို အပေါ်မှာ ကပ်နေအောင် (Sticky) လုပ်ခြင်း */
+thead.sticky-header th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #1e2329; /* Nav background color နဲ့ တူအောင် ထားပါ */
+}
+
+/* Card Hover Effect */
+#history-card-container > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Glassmorphism subtle touch */
+#history-card-container > div {
+    backdrop-filter: blur(10px);
+    background: var(--bg-main); /* Custom opacity for premium look */
+}
+
+/* futuretrades.css ရဲ့ အပေါ်ဆုံးမှာ အစားထိုးပါ */
+:root {
+    --bg-main: #061121;      /* Crypto.com-style Deep Blue */
+    --bg-card: #101b2b;      /* Slightly lighter blue for sections */
+    --border-color: #1e2c3f; /* Border color to match */
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: #eaecef;
+    font-size: 12px;
+}
+
+
+/* Date Picker အတွက် အထူးပြုပြင်ချက် */
+#dateFilter::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* မှောင်နေတဲ့ theme မှာ calendar icon ဖြူအောင်လုပ်ခြင်း */
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    #dateFilter {
+        width: auto; /* auto ပြန်ပြောင်းပေးပါ */
+        min-width: 110px;
+        padding: 6px;
+        background-color: #101b2b; /* ဖုန်းမှာ ပိုကြည်အောင် အရောင်ရင့်ထားပါ */
+    }
+    
+    /* Search Box ကိုလည်း နည်းနည်း ကျဉ်းပေးမှ Date အတွက် နေရာရပါမယ် */
+    #historySearch {
+        min-width: 120px !important;
+    }
+}
+
+.fas.fa-bell, .fas.fa-gear {
+    font-size: 16px !important; /* Icon ဆိုဒ်ကို ကြီးအောင်လုပ်ခြင်း */
+}
+
+/* Tab Scrollbar ကို ဖျောက်ခြင်း */
+.flex.overflow-x-auto {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.flex.overflow-x-auto::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+/* Tab တွေကြားက နေရာလွတ်ကို ပိုကျယ်စေပြီး ဆွဲရလွယ်ကူအောင် လုပ်ခြင်း */
+.tab-item {
+    padding-left: 0.5px;
+    padding-right: 0.5px;
+    flex-shrink: 0; /* စာသားတွေ မကျုံ့သွားအောင် */
+}
+
+/* Date Filter အတွက် Mobile ညှိချက် */
+@media (max-width: 640px) {
+    #dateFilter {
+        min-width: 105px;
+        font-size: 10px;
+    }
+    #historySearch {
+        min-width: 100px;
+    }
+}

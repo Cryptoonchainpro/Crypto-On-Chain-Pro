@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto On-Chain Pro - Future Trading</title>
+    <link rel="shortcut icon" href="./img/Logo.jpg" type="image/svg+xml">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="futuretrades.css">
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+    
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+  // သင့်ရဲ့ Firebase Console ကနေရလာတဲ့ config ကို ဒီမှာ အစားထိုးပါ
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQ4uu3RzFI9upozRFfmsqpA_0ab3PxjSs",
+    authDomain: "crypto-onchain-pro.firebaseapp.com",
+    databaseURL: "https://crypto-onchain-pro-default-rtdb.firebaseio.com",
+    projectId: "crypto-onchain-pro",
+    storageBucket: "crypto-onchain-pro.firebasestorage.app",
+    messagingSenderId: "696320522112",
+    appId: "1:696320522112:web:fb09b5a4981fe2d3e6f365"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+</head>
+<body>
+
+    <nav class="border-b border-gray-800 p-4 flex justify-between items-center bg-[#061121] sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue-700">
+        <img src="./img/Logo.jpg" class="w-full h-full object-cover">
+    </div>
+        <span class="text-base md:text-lg font-bold tracking-tighter text-white whitespace-nowrap" data-lang="logo">Crypto On-Chain Pro</span>
+    
+</div>
+
+        <div class="flex items-center gap-2 md:gap-4">
+            <div class="text-right border-r border-gray-700 pr-4 hidden md:block">
+                <div class="text-[10px] text-gray-500 uppercase" data-lang="balance">Avbl Balance</div>
+                <div class="text-green-400 font-bold font-mono"><span id="wallet-balance"></span> <span class="text-xs">USDT</span></div>
+            </div>
+
+            <a href="setting.html?tab=notifications" class="relative group">
+    <div class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition">
+        <i class="fas fa-bell text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+    <span id="noti-badge" class="hidden absolute top-1.5 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#061121]"></span>
+</a>
+
+<div class="user-profile-dropdown">
+    <div class="user-icon-wrapper" onclick="toggleDropdown()">
+        <i class="fa-solid fa-user"></i>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+    </div>
+
+    <div id="userMenu" class="dropdown-content">
+        <div class="user-info-header">
+            <div class="profile-circle" id="userInitial">---</div>
+            <div class="user-details">
+                <h4 id="dropName">---</h4>
+                <p id="dropUID">---</p>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="user-stats">
+            <div class="stat-item">
+                <span>Level:</span>
+                <span id="dropLevel" class="badge-level">---</span>
+            </div>
+            <div class="stat-item">
+                <span>Status:</span>
+                <span id="dropStatus" class="status-active">---</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <button onclick="logoutUser()" class="logout-btn">Log Out</button>
+    </div>
+</div>
+
+                <div onclick="parent.switchToSetting()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition cursor-pointer group">
+        <i class="fas fa-gear text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+
+       <div style="padding: 10px 15px; background-color: var(--bg-main); border-left: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
+            <span style="color: #848e9c; font-weight: bold;">Market Overview</span>
+          
+<div style="display: flex; align-items: center; gap: 12px;">
+        <div class="binance-chart-icon" onclick="toggleMarketOverview()" style="cursor: pointer; display: flex;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 8V11M6 11V16M6 11H4M6 11H8" stroke="#848e9c" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 5V8M12 8V19M12 8H10M12 8H14" stroke="#848e9c" stroke-width="2" stroke-linecap="round"/>
+                <path d="M18 10V13M18 13V15M18 13H16M18 13H20" stroke="#848e9c" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+    <button onclick="toggleMarketOverview()" style="background-color: var(--bg-main); color: rgb(230, 210, 210); border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+         Market Overview ▼
+    </button>
+</div>
+        </div>
+
+<div id="market-full-container" style="display: none;" class="bg-[#061121] p-4 rounded-lg border border-gray-800">
+
+        <section class="market-overview" id="market-overview-section">
+            <div class="market-header" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; padding: 10px;">
+                 <div class="search-container" style="flex: 1; max-width: 300px;"> 
+                    <input type="text" id="market-search" placeholder="Search Pair..." 
+                       style="width: 100%; padding: 6px 12px; font-size: 13px; border-radius: 6px; border: 1px solid #333; background: #1e2329; color: white;">
+                </div>
+            </div>
+            <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table id="market-table">
+            <thead>
+                <tr>
+                    <th class="text-left">Symbol</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Change</th>
+                    <th class="text-center">Action</th> </tr>
+            </thead>
+                <tbody id="market-body">
+                </tbody>
+            </table>
+            </div>
+            <div class="pagination-center">
+                <button id="prev-page">← Previous</button>
+                <span id="page-info">Page 1</span>
+                <button id="next-page">Next →</button>
+            </div>
+        </section>
+
+</div>
+        
+        <section class="trading-tools">
+            <div class="tool-box order-book">
+                <div class="label">Order Book</div>
+                 <div class="pair-selector-container">
+    <div class="dropdown">
+        <div class="dropbtn" id="pair-dropdown-btn">
+            <div class="selected-pair-info">
+                <span id="current-pair-name">BTC/USDT</span>
+                <span id="current-pair-change" style="color: #ff3b3b; margin-left: 8px;">-2.5%</span>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="dropdown-content" id="pair-dropdown-content">
+            <div class="search-box-wrapper">
+                <input type="text" id="pair-search" placeholder="Search Pair...">
+            </div>
+            <div id="pair-list-results" class="pair-list">
+                </div>
+        </div>
+    </div>
+</div>
+                <div class="book-list">
+                    <div class="book-header"><span>Price</span><span>Amount</span></div>
+                    <div id="asks" class="asks-container"></div>
+                    <div class="price-mid" id="mid-price">---</div>
+                    <div id="bids" class="bids-container"></div>
+                </div>
+            </div>
+
+            <div class="tool-box trading-side">
+                
+    <div class="order-form">
+    <div class="form-inputs">
+
+        <div class="futures-type-btns" style="display: flex; gap: 5px; margin-bottom: 10px;">
+        <button onclick="openModal('margin-mode-modal')" id="margin-mode-btn" type="button" class="f-btn" style="flex: 1; background: #2b3139; border: 1px solid #474d57; color: white; padding: 5px; border-radius: 4px; cursor: pointer;">Cross</button>
+        <button onclick="openLeverageModal()"type="button" id="leverage-display-btn" class="f-btn" style="flex: 1; background: #2b3139; border: 1px solid #474d57; color: white; padding: 5px; border-radius: 4px; cursor: pointer;">20x</button>
+        <button onclick="openModal('asset-mode-modal')" id="asset-mode-btn" type="button" class="f-btn" style="flex: 1; background: #2b3139; border: 1px solid #474d57; color: white; padding: 5px; border-radius: 4px; cursor: pointer;">S</button>
+    </div>
+
+    <div class="input-row" style="margin-bottom: 12px; position: relative;">
+            <label>Search Asset</label>
+            <div style="position: relative; width: 100%;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #848e9c; font-size: 10px;"></i>
+                <input type="text" id="order-coin-search" oninput="filterOrderCoins()" placeholder="BTC, ETH, etc..." 
+                    style="width: 100%; background: #0b0e1181; border: 1px solid #2b3139; color: white; padding: 8px 10px 8px 30px; border-radius: 7px; outline: none; font-size: 12px;">
+            </div>
+            <div id="search-results-dropdown" class="hidden" 
+                style="position: absolute; width: 100%; background: #1e2329; border: 1px solid #474d57; border-radius: 4px; z-index: 100; overflow-y: auto; top: 100%; left: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+
+        <div class="input-row">
+            <label>Order Type</label>
+            <select id="order-type-select" onchange="handleOrderTypeChange()" style="width: 100%; background: none; border: none; color: white; outline: none; cursor: pointer;">
+                <option value="Limit">⚖️ Limit</option>
+                <option value="Market">🛒 Market</option>
+                <option value="Stop Limit">🛑 Stop Limit</option>
+                <option value="Stop Market">🎯 Stop Market</option>
+                <option value="Trailing Stop">📈 Trailing Stop</option>
+                <option value="OCO">🔄 OCO</option>
+                <option value="TWAP">⏳ TWAP</option>
+            </select>
+        </div>
+        
+<div id="dynamic-inputs-container"></div>
+
+
+    <div class="input-row">
+        <label>Price</label>
+        <input type="text" id="order-price" value="64230.50">
+    </div>
+    <div class="input-row" style="position: relative;">
+    <label id="selected-coin-symbol">BTC</label>
+    <input type="text" id="coin-amount" placeholder="0.00" style="padding-right: 45px;">
+    <span onclick="applyMaxAmount()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #ffffff; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10;">Max</span>
+</div>
+
+      
+   <div class="binance-slider-container">
+    <div id="slider-tooltip" class="slider-tooltip">0%</div>
+
+    <div class="slider-track-wrapper">
+        <div class="slider-base-track"></div>
+
+        <div class="slider-dots">
+            <div class="dot" id="dot-0" onclick="updateBinanceSlider(0)"></div>
+            <div class="dot" id="dot-25" onclick="updateBinanceSlider(25)"></div>
+            <div class="dot" id="dot-50" onclick="updateBinanceSlider(50)"></div>
+            <div class="dot" id="dot-75" onclick="updateBinanceSlider(75)"></div>
+            <div class="dot" id="dot-100" onclick="updateBinanceSlider(100)"></div>
+        </div>
+    </div>
+
+    <div class="slider-labels">
+        <span onclick="updateBinanceSlider(0)">0%</span>
+        <span onclick="updateBinanceSlider(25)">25%</span>
+        <span onclick="updateBinanceSlider(50)">50%</span>
+        <span onclick="updateBinanceSlider(75)">75%</span>
+        <span onclick="updateBinanceSlider(100)">100%</span>
+    </div>
+</div>
+
+    <div class="input-row">
+        <label>USDT</label>
+        <input type="text" id="order-amount" placeholder="0.00">
+    </div>
+
+                        <div class="choice-item">
+    <input type="checkbox" id="tp-sl-check">
+    <label for="tp-sl-check">TP/SL</label>
+</div>
+<div id="tp-sl-fields" style="display: none; margin-left: 20px;">
+    <div class="input-row small">
+        <label>TP Limit (USDT)</label>
+        <input type="text" placeholder="Price">
+    </div>
+    <div class="input-row small">
+        <label>SL Trigger (USDT)</label>
+        <input type="text" placeholder="Trigger Price">
+    </div>
+    <div class="input-row small">
+        <label>SL Limit</label>
+        <input type="text" placeholder="Execution Price">
+    </div>
+</div>
+
+<div class="choice-item">
+    <input type="checkbox" id="iceberg-check">
+    <label for="iceberg-check">Iceberg</label>
+</div>
+<div id="iceberg-fields" style="display: none; margin-left: 20px;">
+    <div class="input-row small">
+        <label>Iceberg Amount</label>
+        <input type="text" placeholder="Visible Amount">
+    </div>
+</div>
+
+<div class="trading-info-box" style="background: #2b3139; border: 1px solid #474d57; border-radius: 6px; padding: 10px; margin-bottom: 15px;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+        <span style="color: #848e9c; font-size: 11px;">Avbl</span>
+        <span id="wallet-balance" style="color: #fff; font-size: 11px; font-weight: bold;">0.00 USDT</span>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        <span style="color: #848e9c; font-size: 11px;">Cost</span>
+        <span id="display-cost" style="color: #fff; font-size: 11px; font-weight: bold;">0.00 USDT</span>
+    </div>
+</div>
+
+                    <div class="action-btns">
+    <button class="tool-btn buy" onclick="openCheckout()">Buy/Long</button>
+    <button class="sell" onclick="addSellShortTrade()">Sell/Short</button>
+</div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+     <section class="trade-history">
+    <div class="flex flex-wrap items-center justify-between border-b border-gray-800 px-4 pt-2">
+        <div class="flex gap-6 text-[13px] font-medium">
+            <button onclick="switchTradeTab(this, 'positions')" class="tab-btn pb-2 border-b-2 border-white text-white">
+                Positions(<span id="pos-count">0</span>)
+            </button>
+            <button onclick="switchTradeTab(this, 'open-orders')" class="tab-btn pb-2 text-gray-500 hover:text-gray-300">
+                Open Orders(<span id="open-count">0</span>)
+            </button>
+        </div>
+        <div class="pb-2 cursor-pointer text-gray-400 hover:text-white transition" onclick="switchTradeTab(null, 'order-history')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"></path><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path><path d="M12 7v5l4 2"></path></svg>
+        </div>
+    </div> 
+
+    <div id="history-container" class="w-full">
+        <div id="positions-tab-content" class="tab-content" style="display: block;">
+            <div id="history-body"></div>
+        </div>
+
+        <div id="open-orders-tab-content" class="tab-content px-4 py-10 text-center text-gray-500 text-xs" style="display: none;">
+            No open orders available.
+        </div>
+
+        <div id="order-history-tab-content" class="tab-content" style="display: none;">
+            <div id="order-history-body"></div>
+        </div>
+    </div>
+</section>
+
+<div id="checkout-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] hidden">
+    <div class="bg-[#061121] w-[90%] max-w-md rounded-xl p-6 border border-gray-700 shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-white">Confirm Order</h3>
+            <button onclick="closeCheckout()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="space-y-4 mb-6">
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-400">Asset</span>
+                <span id="checkout-coin-name" class="text-white font-bold">BTC/USDT</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-400">Amount</span>
+                <span id="checkout-coin-qty" class="text-white">0.00</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-400">Total USDT</span>
+                <span id="checkout-total-usdt" class="text-yellow-500 font-bold">0.00 USDT</span>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-400 text-sm mb-2">Payment Method</label>
+            <button onclick="togglePaymentMethods()" id="selected-payment-display" class="w-full bg-[#2b3139] border border-gray-600 rounded-lg p-3 flex justify-between items-center text-white">
+                <span><i class="fas fa-wallet mr-2 text-blue-500"></i> <span id="payment-name">Spot Wallet</span></span>
+                <i class="fas fa-chevron-down text-xs"></i>
+            </button>
+            
+            <div id="payment-options" class="mt-2 bg-[#2b3139] border border-gray-600 rounded-lg hidden overflow-hidden">
+                <div onclick="selectPayment('fiatBalance', 'Fiat Wallet')" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 border-b border-gray-700">
+                    <i class="fas fa-university text-green-500"></i> <span class="text-white">Fiat Wallet</span>
+                </div>
+                <div onclick="selectPayment('spotBalance', 'Spot Wallet')" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 border-b border-gray-700">
+                    <i class="fas fa-wallet text-blue-500"></i> <span class="text-white">Spot Wallet</span>
+                </div>
+                <div onclick="selectPayment('defiBalance', 'DeFi Wallet')" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 border-b border-gray-700">
+                    <i class="fas fa-shield-alt text-purple-500"></i> <span class="text-white">DeFi Wallet</span>
+                </div>
+                <div onclick="selectPayment('earnBalance', 'Earn/Staking Wallet')" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3">
+                    <i class="fas fa-coins text-yellow-500"></i> <span class="text-white">Earn/Staking Wallet</span>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="confirmCheckoutTrade()" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-4 rounded-lg transition-all">
+            Confirm Payment
+        </button>
+    </div>
+</div>
+
+<div id="leverage-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
+    <div class="bg-[#061121] border border-gray-700 w-full max-w-sm rounded-xl shadow-2xl p-5">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold text-white">Adjust Leverage</h3>
+            <button onclick="closeLeverageModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="flex items-center gap-2 mb-6">
+            <button onclick="adjustLev(-1)" class="w-10 h-10 bg-[#2b3139] rounded flex items-center justify-center text-gray-400 hover:text-white transition text-xl border border-gray-600">-</button>
+            <div class="flex-1 relative">
+                <input type="text" id="lev-input" value="20x" class="w-full bg-[#2b3139] border border-gray-500 rounded h-10 text-center font-bold text-white focus:outline-none">
+            </div>
+            <button onclick="adjustLev(1)" class="w-10 h-10 bg-[#2b3139] rounded flex items-center justify-center text-gray-400 hover:text-white transition text-xl border border-gray-600">+</button>
+        </div>
+
+        <div class="relative mb-10 px-2 pt-6">
+            <div id="lev-tooltip" class="absolute -top-2 bg-gray-700 text-white px-2 py-1 rounded text-[10px] -translate-x-1/2 transition-all">20x</div>
+            <input type="range" id="lev-slider" min="1" max="150" value="20" 
+                   class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gray-500"
+                   oninput="updateLevSlider(this.value)">
+            <div class="flex justify-between mt-2 text-[10px] text-gray-500 font-bold">
+                <span>1x</span>
+                <span>30x</span>
+                <span>60x</span>
+                <span>90x</span>
+                <span>120x</span>
+                <span>150x</span>
+            </div>
+        </div>
+
+        <div class="text-[11px] text-gray-400 space-y-3 mb-6 bg-[#0b0e11] p-3 rounded-lg border border-gray-800">
+            <p>• Maximum position at current leverage: <span class="text-white">3,000,000USDT</span>.</p>
+            <p>• Please note that leverage changing will also apply for open positions and open orders.</p>
+            <p class="text-red-400 bg-red-400/10 p-2 rounded">
+                • Selection higher leverage such as (10x) increases your liquidation risk. Always manage your risk levels. See our help article for more information.
+            </p>
+        </div>
+
+        <div class="flex justify-between items-center mb-4 text-xs">
+            <span class="text-gray-500">Default Leverage & Margin Mode</span>
+            <span onclick="openDefaultSettingsModal()" class="text-blue-400 cursor-pointer hover:text-blue-300">Off <i class="fas fa-chevron-right text-[8px]"></i></span>
+        </div>
+        <button onclick="confirmLeverage()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-500 transition shadow-lg shadow-blue-900/20">Confirm</button>
+    </div>
+</div>
+
+<div id="default-settings-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[110] p-4">
+    <div class="bg-[#061121] border border-gray-700 w-full max-w-sm rounded-xl shadow-2xl p-5">
+        <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-3">
+            <h3 class="text-[13px] font-semibold text-white">Default Leverage & Margin Mode</h3>
+            <button onclick="closeDefaultSettingsModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-gray-200 text-xs">Enable Apply Default Leverage</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="enable-default-toggle" class="sr-only peer" onchange="toggleDefaultSettings(this.checked)">
+                <div class="w-10 h-5 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+            </label>
+        </div>
+
+        <div id="default-settings-content" class="opacity-30 pointer-events-none transition-all duration-300">
+            <div class="mb-6">
+                <p class="text-[11px] text-gray-500 mb-3">Default Leverage</p>
+                <div class="flex items-center gap-2 mb-6">
+                    <button onclick="adjustDefLev(-1)" class="w-9 h-9 bg-[#2b3139] rounded text-gray-400 border border-gray-600">-</button>
+                    <input type="text" id="def-lev-input" value="20x" class="flex-1 bg-[#2b3139] border border-blue-500/50 rounded h-9 text-center font-bold text-white focus:outline-none" readonly>
+                    <button onclick="adjustDefLev(1)" class="w-9 h-9 bg-[#2b3139] rounded text-gray-400 border border-gray-600">+</button>
+                </div>
+
+                <div class="relative px-2 pt-5 mb-8">
+                    <div id="def-tooltip" class="absolute -top-2 bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] -translate-x-1/2">20x</div>
+                    <input type="range" id="def-slider" min="1" max="50" value="20" 
+                           class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                           oninput="updateDefSlider(this.value)">
+                    <div class="flex justify-between mt-2 text-[9px] text-gray-500 font-bold">
+                        <span>1x</span><span>10x</span><span>20x</span><span>30x</span><span>40x</span><span>50x</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-[11px] text-gray-500 mb-3">Default Margin Mode</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <div id="mode-cross" onclick="setDefMargin('Cross')" class="border border-blue-500 bg-[#2b3139] py-2 text-center rounded cursor-pointer text-xs text-white">Cross</div>
+                    <div id="mode-isolated" onclick="setDefMargin('Isolated')" class="border border-gray-700 py-2 text-center rounded cursor-pointer text-xs text-gray-500">Isolated</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-[10px] text-gray-500 space-y-1 mb-6 border-t border-gray-800 pt-4">
+            <p>* Change will not take effect until you visit the symbol's trading page.</p>
+            <p>* These setting will not apply if you have a open position or orders.</p>
+            <p>* If your default setting leverage is higher than allowed for the symbol it will not take effect.</p>
+            <p>* Will not take effect of API.</p>
+        </div>
+
+        <button onclick="closeDefaultSettingsModal()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-500 transition shadow-lg shadow-blue-900/20">Confirm</button>
+    </div>
+</div>
+
+<div id="margin-mode-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-[100]">
+    <div class="bg-[#061121] w-[350px] rounded-lg p-5 border border-gray-700">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold">Margin Mode</h3>
+            <button onclick="closeModal('margin-mode-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="border border-white-500/50 p-3 rounded mb-3 cursor-pointer bg-[#2b3139]" onclick="selectMarginMode('Cross')">
+            <h4 class="font-bold text-white mb-1">Cross</h4>
+            <p class="text-xs text-gray-400">All cross positions under the same margin asset share the same asset cross margin balance. In the event of liquidation, your asset full margin balance along with any remaining open positions under the asset may be forfeited.</p>
+        </div>
+
+        <div class="border border-gray-700 p-3 rounded mb-4 cursor-pointer hover:border-gray-500" onclick="selectMarginMode('Isolated')">
+            <h4 class="font-bold text-white mb-1">Isolated</h4>
+            <p class="text-xs text-gray-400">The Margin assigned to a position is restricted to a certain amount. If the Margin falls below the Maintenance Margin level, the position is liquidated. However, you can add and remove Margin at will under this mode.</p>
+        </div>
+
+        <p class="text-[10px] text-gray-500 mb-4">* Switching of margin modes only applies to the selected contract.</p>
+
+        <div class="flex justify-between items-center text-sm mb-6">
+            <span class="text-gray-300">Default Leverage & Margin Mode</span>
+            <button onclick="openDefaultSettingsModal()" class="text-gray-400">Off <i class="fas fa-chevron-right ml-1"></i></button>
+        </div>
+
+        <button onclick="closeModal('margin-mode-modal')" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-500 transition shadow-lg shadow-blue-900/20">Confirm</button>
+        
+    </div>
+</div>
+
+<div id="asset-mode-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
+    <div class="bg-[#061121] border border-gray-700 w-full max-w-md rounded-xl shadow-2xl overflow-hidden">
+        <div class="p-4 border-b border-gray-800 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-white">Asset Mode</h3>
+            <button onclick="closeModal('asset-mode-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="p-4 space-y-4">
+            <div id="mode-single" onclick="selectAssetMode('Single')" class="asset-option border-2 border-blue-500 bg-[#2b3139] p-4 rounded-lg cursor-pointer hover:bg-[#363c45] transition group">
+                <div class="flex items-center gap-3 mb-2">
+                    <div id="icon-bg-single" class="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center text-blue-500">
+                        <i class="fas fa-coins text-lg"></i>
+                    </div>
+                    <span class="font-bold text-white">Single-Asset Mode</span>
+                </div>
+                <ul class="text-[11px] text-gray-400 list-disc ml-5 space-y-1">
+                    <li>Support USDⓈ-M Futures trading by using the single margin asset of the symbol.</li>
+                    <li>PNL of the same margin asset positions can be offset.</li>
+                    <li>Supports Cross Margin Mode and Isolated Margin Mode.</li>
+                </ul>
+            </div>
+
+            <div id="mode-multi" onclick="selectAssetMode('Multi')" class="asset-option border-2 border-transparent bg-[#2b3139] p-4 rounded-lg cursor-pointer hover:bg-[#363c45] transition group">
+                <div class="flex items-center gap-3 mb-2">
+                    <div id="icon-bg-multi" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-blue-400">
+                        <i class="fas fa-layer-group text-lg"></i>
+                    </div>
+                    <span class="font-bold text-white">Multi-Assets Mode</span>
+                </div>
+                <ul class="text-[11px] text-gray-400 list-disc ml-5 space-y-1">
+                    <li>USDⓈ-M Futures trading cross multiple margin assets.</li>
+                    <li>PNL can be offset among the different margin asset positions.</li>
+                    <li>Only supports Cross Margin Mode.</li>
+                </ul>
+            </div>
+
+            <p class="text-[10px] text-gray-500 italic">
+                * Before activating Multi-Assets Mode, please read the Guide in detail to better manage USDⓢ-M Futures account risk accordingly when using Multi-Assets Mode.
+            </p>
+        </div>
+
+        <div class="p-4 border-t border-gray-800">
+            <button onclick="confirmAssetMode()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-500 transition shadow-lg shadow-blue-900/20">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div id="closeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999] p-4 transition-all duration-300">
+    <div class="bg-[#1e2329] border border-gray-700/50 w-full max-w-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-all">
+        
+        <div class="p-5">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-white font-bold text-xl tracking-tight">Close Position</h3>
+                    <p class="text-gray-500 text-[11px] uppercase tracking-widest mt-0.5"></p>
+                </div>
+                <button onclick="hideCloseModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3.5 bg-[#0b0e11]/50 p-4 rounded-xl border border-gray-800/50 mb-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500 text-xs">Symbol</span>
+                    <span id="m-symbol" class="text-white font-bold text-sm bg-gray-800 px-2 py-1 rounded">--</span>
+                </div>
+                
+                <hr class="border-gray-800/50">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-gray-500 text-[11px] block mb-1">Entry Price</span>
+                        <span id="m-entry" class="text-gray-200 text-sm font-medium">0.00</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-gray-500 text-[11px] block mb-1">Market Price</span>
+                        <span id="m-market" class="text-white text-sm font-bold">0.00</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-gray-500 text-[11px] block mb-1">Amount</span>
+                        <span id="m-amount" class="text-gray-200 text-sm font-medium">0.00</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-gray-500 text-[11px] block mb-1">Position Size</span>
+                        <span id="m-pos-size" class="text-gray-200 text-sm font-medium">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center px-1 mb-6">
+                <span class="text-gray-400 text-sm font-medium">Estimated PNL</span>
+                <div class="text-right">
+                    <span id="m-pnl" class="text-lg font-black tracking-tight">0.00</span>
+                    <span class="text-[10px] block text-gray-500 font-medium">Incl. Trading Fees</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="hideCloseModal()" class="flex-1 py-3.5 rounded-xl bg-[#2b3139] text-gray-300 font-bold text-sm hover:bg-[#363c45] transition-all">
+                    Cancel
+                </button>
+                <button id="confirmCloseBtn" class="flex-[1.5] py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold text-sm shadow-lg shadow-red-900/20 hover:brightness-110 active:scale-[0.98] transition-all">
+                    Confirm Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+    <div id="notification-container1" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+    
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script src="auth-check.js"></script>
+    <script src="futuretrades.js"></script>
+    <script src="stocks.js"></script>
+    <script src="notification.js"></script>
+
+    
+</body>
+</html>

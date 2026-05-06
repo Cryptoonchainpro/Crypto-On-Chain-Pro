@@ -1,0 +1,377 @@
+
+
+/*** Wallet ***/
+
+#action-modal {
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+:root {
+    --bg-color: #0b0e11;
+    --card-bg: #1e2329;
+    --text-color: #eaecef;
+    --accent-blue: #3b82f6;
+}
+
+body.light-mode {
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-color: #111827;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.portfolio-card {
+    background-color: var(--bg-main);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Button အားလုံးကို အပြာရောင်ပြောင်းခြင်း */
+button.bg-yellow-500 {
+    background-color: var(--accent-blue) !important;
+    color: white !important;
+}
+
+button.bg-yellow-500:hover {
+    background-color: #2563eb !important;
+}
+
+/* Scrollbar အပြာရောင် */
+.custom-select::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+}
+
+/* Chart Container */
+canvas#assetChart {
+    max-width: 100% !important;
+}
+
+
+/* Animation for Modals */
+.animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Custom Styled Select */
+select option {
+    background-color: #1e2329;
+    color: white;
+    padding: 10px;
+}
+
+/* Action icons hover effect */
+.fa-copy:active {
+    transform: scale(1.2);
+    color: #3b82f6;
+}
+
+/* Table အကျယ်ကို Page Layout နဲ့ ညှိခြင်း */
+.overflow-x-auto {
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap; /* စာသားတွေ မဆံ့ရင် အောက်မဆင်းဘဲ Scroll လုပ်နိုင်အောင် */
+}
+
+/* Scrollbar styling for coin list */
+#transfer-coin-list::-webkit-scrollbar {
+    width: 4px;
+}
+#transfer-coin-list::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+/* Transfer Inputs height adjustment */
+#trans-amount, #trans-usdt {
+    height: 48px !important; /* height ကို fixed ထားပြီး ညီအောင်လုပ်ခြင်း */
+    box-sizing: border-box;
+}
+
+/* Withdraw & Transfer Inputs height adjustment */
+#wd-amount-coin, #wd-amount-usdt, 
+#trans-amount, #trans-usdt {
+    height: 48px !important;
+    box-sizing: border-box;
+}
+
+#historySearch {
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+#historySearch:focus {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+/* Table Scroll အဆင်ပြေစေရန် */
+.overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 transparent;
+}
+
+/* Mobile မှာ Card padding လျှော့ရန် */
+@media (max-width: 640px) {
+    .portfolio-card {
+        padding: 1rem;
+    }
+    h2.text-3xl {
+        font-size: 1.5rem;
+    }
+}
+
+/* Tab Buttons Hover Effect */
+.tab-btn {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Staking Card Animation */
+.wallet-section {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Tab ခလုတ်များ စာလုံးအရွယ်အစား လျှော့ရန် */
+    .tab-btn {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Fiat card အတွင်းရှိ Button များကို Grid ချရန် */
+    .wallet-section .grid-cols-3 {
+        
+        display: grid;
+        width: 100%;
+    }
+    
+    /* Table များကို ဖုန်းမှာ ဘေးတိုက်ဆွဲကြည့်နိုင်အောင် လုပ်ခြင်း */
+    .overflow-x-auto {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+}
+
+/* --- User Dropdown Menu with Custom Scrollbar --- */
+
+/* Dropdown Container ရဲ့ အခြေခံ Style */
+.user-dropdown-menu {
+    display: none; /* Logic မပြောင်းလဲစေရန် JavaScript အတွက် ပိတ်ထားခြင်း */
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    width: 260px;
+    background-color: #1e2329; /* Card background */
+    border: 1px solid #2b3139;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+/* Dropdown ပွင့်လာတဲ့အခါ သုံးဖို့ Class */
+.user-dropdown-menu.show {
+    display: block;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll Bar ပါဝင်မည့် Menu List အပိုင်း */
+.user-dropdown-menu .py-6 {
+    max-height: 350px; /* Scroll bar ပေါ်လာစေရန် အမြင့်သတ်မှတ်ခြင်း */
+    overflow-y: auto;
+    scrollbar-width: thin; /* Firefox အတွက် */
+    scrollbar-color: #3b82f6 transparent; /* Firefox အတွက် */
+}
+
+/* --- Custom Scrollbar Styling (Chrome, Safari, Edge) --- */
+.user-dropdown-menu .py-6::-webkit-scrollbar {
+    width: 30%; /* Scroll bar အကျယ် */
+}
+
+.user-dropdown-menu .py-6::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.user-dropdown-menu .py-6::-webkit-scrollbar-thumb {
+    background: #3b82f6; /* သင်၏ Accent Blue အရောင် */
+    border-radius: 10px;
+}
+
+.user-dropdown-menu .py-6::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+/* Menu Items (Buttons) Style */
+.dropdown-nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #eaecef;
+    font-size: 15px;
+    transition: all 0.2s;
+    text-align: left;
+    background: transparent;
+    border: none;
+}
+
+.dropdown-nav-item:hover {
+    background-color: #2b3139;
+    color: #3b82f6;
+}
+
+/* Active ဖြစ်နေသော Menu */
+.dropdown-nav-item.nav-active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    border-right: 3px solid #3b82f6;
+}
+
+/* Toast Notification Style */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    background: #1e2329;
+    color: white;
+    padding: 16px 24px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    border-left: 5px solid #3b82f6;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    animation: slideInRight 0.3s ease-out forwards;
+}
+
+.toast.success { border-left-color: #10b981; }
+.toast.error { border-left-color: #ef4444; }
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+
+.user-profile-dropdown { position: relative; display: inline-block; cursor: pointer; }
+
+.user-icon-wrapper { display: flex; align-items: center; gap: 8px; }
+
+.user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #f0b90b; }
+
+.dropdown-content {
+    display: none; 
+    position: absolute; 
+    left: -700%;            /* ဤနေရာကို left: 0; သို့ ပြောင်းလိုက်ပါ */
+    top: 35px;
+    background: #1e2329; 
+    min-width: 250px; 
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5); 
+    padding: 15px; 
+    z-index: 1000;
+}
+
+.user-info-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+.profile-circle {
+    width: 45px; height: 45px; background: #f0b90b; color: #000;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2rem;
+}
+
+.user-details h4 { margin: 0; color: #fff; font-size: 1rem; }
+.user-details p { margin: 0; font-size: 0.8rem; color: #848e9c; }
+
+.stat-item { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.9rem; color: #eaecef; }
+
+.badge-level { color: #f3f0e8; font-weight: bold; }
+.status-active { color: #f3f7f5; }
+
+.menu-link {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; color: #fff; text-decoration: none; border-top: 1px solid #2b3139;
+}
+
+.menu-link:hover { color: #f0b90b; }
+
+.logout-btn {
+    width: 100%; background: #2b3139; color: #f6465d; border: none;
+    padding: 10px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+}
+
+
+/* futuretrades.css ရဲ့ အပေါ်ဆုံးမှာ အစားထိုးပါ */
+:root {
+    --bg-main: #061121;      /* Crypto.com-style Deep Blue */
+    --bg-card: #101b2b;      /* Slightly lighter blue for sections */
+    --border-color: #1e2c3f; /* Border color to match */
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: #eaecef;
+    font-size: 12px;
+}
+
+/* Scrollbar ကို အမြင်အာရုံမှာ ဖျောက်ထားပြီး Swipe လုပ်လို့ရအောင် လုပ်ခြင်း */
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera အတွက် */
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge အတွက် */
+    scrollbar-width: none;  /* Firefox အတွက် */
+    -webkit-overflow-scrolling: touch; /* iOS မှာ ချောမွေ့စွာ scroll လုပ်နိုင်ရန် */
+}
+
+
+.fas.fa-bell, .fas.fa-gear {
+    font-size: 16px !important; /* Icon ဆိုဒ်ကို ကြီးအောင်လုပ်ခြင်း */
+}

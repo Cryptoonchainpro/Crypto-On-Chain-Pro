@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Crypto On-Chain Pro | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="futuretrades.css">
+    <link rel="stylesheet" href="portfolio.css">
+    <style>
+        /* CSS ထဲမှာ ဒါကို ထည့်ပါ */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Main page scroll ကို ပိတ်လိုက်တာပါ */
+}
+
+#content-loader {
+    height: calc(100dvh - 65px); /* 60px က bottom nav ရဲ့ ခန့်မှန်းခြေအမြင့်ပါ */
+    overflow: hidden;
+}
+
+        :root {
+            --accent-blue: #3b82f6;
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --trade-green: #0ecb81;
+            --trade-red: #f6465d;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #060b13; color: #fff; overflow-x: hidden; }
+        
+        /* Bottom Nav Styling */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(11, 14, 17, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-around;
+            padding: 10px 0; z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { color: #848e9c; transition: 0.3s; display: flex; flex-direction: column; align-items: center; font-size: 10px; cursor: pointer; }
+        .nav-item.active { color: var(--accent-blue); text-shadow: 0 0 10px var(--accent-blue); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+
+        /* Glassmorphism Cards */
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; }
+        .tab-content { display: none; padding-bottom: 80px; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Sparkline Chart Canvas */
+        .sparkline { height: 40px; width: 80px; position: absolute; bottom: 0; right: 0; opacity: 0.4; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div id="content-loader">
+        <section id="home" class="tab-content active">
+           <iframe src="home.html" 
+                class="w-full h-[calc(100dvh-65px)] border-none" 
+                id="home-frame" 
+                style="height: calc(100dvh - 65px);"
+                scrolling="yes">
+        </iframe>
+        </section>
+
+        <section id="market" class="tab-content">
+            <iframe src="stocktrading.html" 
+                class="w-full h-[calc(100dvh-65px)] border-none" 
+                id="home-frame" 
+                style="height: calc(100dvh - 65px);"
+                scrolling="yes">
+        </iframe>
+        </section>
+
+        <section id="trade" class="tab-content">
+            <iframe src="trade.html" 
+                class="w-full h-[calc(100dvh-65px)] border-none" 
+                id="home-frame" 
+                style="height: calc(100dvh - 65px);"
+                scrolling="yes">
+        </iframe>
+        </section>
+
+        <section id="futures" class="tab-content">
+            <iframe src="futuretrades.html" 
+                class="w-full h-[calc(100dvh-65px)] border-none" 
+                id="home-frame" 
+                style="height: calc(100dvh - 65px);"
+                scrolling="yes">
+        </iframe>
+        </section>
+
+        <section id="account" class="tab-content">
+            <iframe src="portfolio.html" 
+                class="w-full h-[calc(100dvh-65px)] border-none" 
+                id="home-frame" 
+                style="height: calc(100dvh - 65px);"
+                scrolling="yes">
+        </iframe>
+        </section>
+
+        <section id="setting" class="tab-content">
+            <iframe src="setting.html" class="w-full h-[calc(100dvh-65px)] border-none"></iframe>
+        </section>
+
+        <section id="stock-future" class="tab-content">
+            <iframe src="stockfuturetrading.html" class="w-full h-[calc(100dvh-65px)] border-none"></iframe>
+        </section>
+
+        <section id="transaction" class="tab-content">
+            <iframe src="transaction.html" class="w-full h-[calc(100dvh-65px)] border-none"></iframe>
+        </section>
+
+        <section id="trade-history" class="tab-content">
+            <iframe src="tradehistory.html" class="w-full h-[calc(100dvh-65px)] border-none"></iframe>
+        </section>
+
+    </div>
+
+    <nav class="bottom-nav" style="height: 65px; position: fixed; bottom: 0; width: 100%;">
+        <div class="nav-item active" onclick="navigate('home', this)">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" onclick="navigate('market', this)">
+            <i class="fas fa-chart-line"></i>
+            <span>Stock</span>
+        </div>
+        <div class="nav-item" onclick="navigate('trade', this)">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Trade</span>
+        </div>
+        <div class="nav-item" onclick="navigate('futures', this)">
+            <i class="fas fa-bolt"></i>
+            <span>Futures</span>
+        </div>
+        <div class="nav-item" onclick="navigate('account', this)">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </div>
+
+        <div class="nav-item hidden" id="nav-setting" onclick="navigate('setting', this)"></div>
+        <div class="nav-item hidden" id="nav-stock-future" onclick="navigate('stock-future', this)"></div>
+        <div class="nav-item hidden" id="nav-transaction" onclick="navigate('transaction', this)"></div>
+        <div class="nav-item hidden" id="nav-trade-history" onclick="navigate('trade-history', this)"></div>
+
+    </nav>
+
+    <script src="main.js"></script>
+    <script src="notification.js"></script>
+</body>
+</html>

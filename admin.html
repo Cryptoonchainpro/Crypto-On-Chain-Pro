@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto-Onchain Pro - Admin</title>
+    <link rel="shortcut icon" href="./img/Logo.jpg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+
+/* Custom Inner Scrollbar */
+.inner-scrollbar::-webkit-scrollbar {
+    width: 5px; /* Scrollbar အကျယ် */
+}
+
+.inner-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05); /* Scroll လမ်းကြောင်းအရောင် */
+    border-radius: 10px;
+}
+
+.inner-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--accent); /* Scroll bar အရောင် (ဥပမာ-အဝါရောင်) */
+    border-radius: 10px;
+}
+
+.inner-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ffc107; /* Mouse တင်လိုက်ရင် ဖြစ်မယ့်အရောင် */
+}
+
+/* Firefox အတွက် */
+.inner-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive Tabs & Inputs */
+.trade-controls {
+    display: flex;
+    flex-wrap: wrap; /* ဖုန်းမှာ အောက်တစ်ကြောင်း ဆင်းသွားစေရန် */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.trade-tab-container {
+    display: flex;
+    overflow-x: auto; /* ဖုန်းမှာ ဘေးတိုက် ဆွဲကြည့်လို့ရရန် */
+    white-space: nowrap;
+    gap: 8px;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.trade-tab-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.trade-tab-container button {
+    padding: 8px 15px;
+    font-size: 13px;
+    flex: 1; /* အကွက်တွေ ညီနေစေရန် */
+    min-width: 120px;
+}
+
+@media (max-width: 600px) {
+    .trade-user-inputs {
+        flex-direction: column; /* ဖုန်းမှာ ID နဲ့ Name တစ်ခုစီ အပေါ်အောက် ထားရန် */
+        width: 100%;
+    }
+}
+
+        @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+        @media (max-width: 992px) {
+    /* Sidebar ပွင့်လာတဲ့အခါ ကျန်တဲ့ content တွေကို အနည်းငယ် မှောင်စေခြင်း */
+    .sidebar.active ~ .main-wrapper {
+        filter: brightness(0.5);
+        pointer-events: none; /* Sidebar ပွင့်နေတုန်း ကျန်တာတွေကို နှိပ်လို့မရအောင် */
+    }
+    
+    .sidebar {
+        transition: left 0.3s ease; /* ပွင့်လာတဲ့အခါ ပိုချောမွေ့စေရန် */
+    }
+}
+
+
+        /* Mobile Responsive Styles */
+@media (max-width: 992px) {
+    #mobile-menu-btn { display: block !important; } /* ဖုန်းမှာ Menu ခလုတ်ပြမယ် */
+    
+    .sidebar {
+        position: fixed;
+        left: -260px; /* Sidebar ကို ဘေးကို ဝှက်ထားမယ် */
+        z-index: 2000;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .sidebar.active {
+        left: 0; /* Menu နှိပ်ရင် ပြန်ပေါ်လာမယ် */
+    }
+
+    .grid-4 {
+        grid-template-columns: 1fr 1fr; /* Card တွေကို ၂ ခုစီပဲ ပြမယ် */
+    }
+
+    .modal-content {
+        width: 95%; /* Modal ကို ဖုန်းမျက်နှာပြင်နဲ့ အဆင်ပြေအောင် ချုံ့မယ် */
+        padding: 20px;
+    }
+
+    .modal-grid {
+        grid-template-columns: 1fr; /* Modal ထဲက field တွေကို တစ်တန်းစီပဲ ပြမယ် */
+    }
+
+    .data-box {
+        overflow-x: auto; /* Table တွေ ဖုန်းမှာ ဘေးတိုက် ဆွဲကြည့်လို့ရအောင် */
+    }
+}
+
+@media (max-width: 600px) {
+    .grid-4 {
+        grid-template-columns: 1fr; /* ဖုန်းအသေးမှာ Card တစ်ခုစီပဲ ပြမယ် */
+    }
+    header {
+        padding: 15px 20px;
+    }
+    .container {
+        padding: 20px;
+    }
+}
+
+
+        .info-group input, .info-group select {
+    width: 100%;
+    background: #1e2329;
+    border: 1px solid var(--border);
+    padding: 8px;
+    border-radius: 6px;
+    color: #fff;
+    margin-top: 5px;
+}
+
+        /* Modal Styling */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+.modal-content {
+    background: var(--card); width: 600px; padding: 30px; 
+    border-radius: 20px; border: 1px solid var(--border);
+    animation: zoomIn 0.3s ease-out;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.info-group span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.info-group strong { font-size: 15px; color: #fff; }
+.close-modal { font-size: 28px; cursor: pointer; color: var(--muted); }
+.close-modal:hover { color: var(--danger); }
+.table-row-hover:hover { background: rgba(255,255,255,0.03); }
+
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* Notification Toast Style */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    background: var(--card);
+    border-left: 4px solid var(--accent);
+    color: #fff;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideIn 0.4s ease forwards;
+    min-width: 300px;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast i { font-size: 20px; color: var(--accent); }
+.toast-content h4 { font-size: 14px; margin-bottom: 3px; }
+.toast-content p { font-size: 12px; color: var(--muted); }
+
+        .ticker-box { display: flex; gap: 15px; font-size: 12px; font-weight: 600; color: var(--success); } 
+
+        :root {
+            --bg: #050709; --sidebar: #0b0e11; --card: #14171a; --accent: #fcd535;
+            --success: #0ecb81; --danger: #f6465d; --text: #eaecef; --muted: #848e9c;
+            --border: rgba(255,255,255,0.05);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--bg); color: var(--text); display: flex; overflow: hidden; }
+
+        /* Sidebar Glass Effect */
+        .sidebar { 
+            width: 260px; background: var(--sidebar); height: 100vh; 
+            border-right: 1px solid var(--border); display: flex; flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .logo { padding: 30px; font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+        .nav-section { flex: 1; overflow-y: auto; padding: 0 15px; }
+        .nav-label { font-size: 11px; color: var(--muted); text-transform: uppercase; margin: 20px 0 10px 10px; }
+        .nav-item { 
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px; 
+            color: var(--muted); text-decoration: none; border-radius: 10px; transition: 0.2s;
+            font-size: 14px; margin-bottom: 4px;
+        }
+        .nav-item:hover, .nav-item.active { background: #1e2329; color: var(--accent); }
+        .nav-item i { font-size: 18px; width: 25px; }
+
+        /* Main Content Area */
+        .main-wrapper { flex: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        header { 
+            padding: 15px 40px; background: rgba(5,7,9,0.8); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border);
+        }
+        .container { padding: 30px 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        /* Pro Dashboard Cards */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { 
+            background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 16px;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .val { font-size: 28px; font-weight: 700; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
+        
+        /* Table Design */
+        .data-box { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; color: var(--muted); font-weight: 500; padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; }
+        td { padding: 18px 15px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .badge { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .success { color: var(--success); background: rgba(14,203,129,0.1); }
+        .danger { color: var(--danger); background: rgba(246,70,93,0.1); }
+
+        /* Content Editor (CMS) */
+        .cms-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+        input, textarea, select { 
+            width: 100%; background: #1e2329; border: 1px solid var(--border); 
+            padding: 12px; border-radius: 8px; color: #fff; outline: none;
+        }
+        input:focus { border-color: var(--accent); }
+        .btn { background: var(--accent); color: #000; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+   
+        header { 
+    padding: 12px 30px; 
+    background: rgba(11, 14, 17, 0.8); 
+    backdrop-filter: blur(12px); /* နောက်ခံကို ဝေဝါးကြည်လင်စေရန် */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* Page Title (Label) ကို ပိုလှအောင်လုပ်ခြင်း */
+#pageTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff; /* ရိုးရိုး အဖြူရောင်စစ်စစ် */
+    letter-spacing: 0.5px;
+    text-transform: uppercase; /* စာလုံးအကြီး */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Time နှင့် Server Status အုပ်စု */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#liveTime {
+    font-family: 'JetBrains Mono', monospace; /* စာလုံးပုံစံကို နည်းပညာဆန်အောင်ပြောင်းခြင်း */
+    font-size: 13px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.03);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+/* Server Online Badge ကို ပိုလှအောင်လုပ်ခြင်း */
+.status-badge {
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    background: rgba(14, 203, 129, 0.1); 
+    padding: 6px 15px; 
+    border-radius: 20px;
+    border: 1px solid rgba(14, 203, 129, 0.2);
+    transition: 0.3s;
+}
+
+.status-badge:hover {
+    background: rgba(14, 203, 129, 0.15);
+    transform: scale(1.05);
+}
+
+.pulse-dot {
+    width: 8px; 
+    height: 8px; 
+    background: var(--success); 
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--success);
+    animation: pulse 2s infinite; /* မီးပွင့်လေး မှိတ်တုတ်မှိတ်တုတ်ဖြစ်စေရန် */
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(14, 203, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 203, 129, 0); }
+}
+
+   </style>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+  // သင့်ရဲ့ Firebase Console ကနေရလာတဲ့ config ကို ဒီမှာ အစားထိုးပါ
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQ4uu3RzFI9upozRFfmsqpA_0ab3PxjSs",
+    authDomain: "crypto-onchain-pro.firebaseapp.com",
+    databaseURL: "https://crypto-onchain-pro-default-rtdb.firebaseio.com",
+    projectId: "crypto-onchain-pro",
+    storageBucket: "crypto-onchain-pro.firebasestorage.app",
+    messagingSenderId: "696320522112",
+    appId: "1:696320522112:web:fb09b5a4981fe2d3e6f365"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo"><img src="./img/Logo.jpg" width="50" height="50"></div>
+        <div class="nav-section">
+            <div class="nav-label">Main Console</div>
+            <a href="#" class="nav-item active" onclick="route('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a href="#" class="nav-item" onclick="route('users')"><i class="fas fa-user-shield"></i> User Control</a>
+           <a href="#" class="nav-item" onclick="route('trades')">
+    <i class="fas fa-chart-line"></i>
+    <span>Trade/Futures</span>
+</a>
+            
+            <a href="#" class="nav-item" onclick="route('verifications')">
+            <i class="fas fa-user-check"></i> Verification Requests
+            <span id="v-badge" style="background: #f0b90b; color: #000; border-radius: 50%; padding: 2px 6px; font-size: 10px; margin-left: 5px; display: none;">0</span>
+            </a>
+            
+            <a href="#" class="nav-item" onclick="route('passwordResets')">
+    <i class="fas fa-key"></i> Reset Requests
+    <span id="pw-badge" style="background: #ef4444; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px; margin-left: 5px; display: none;">0</span>
+</a>
+
+            <div class="nav-label">Communication</div>
+<a href="#" class="nav-item" onclick="route('send_notification')">
+    <i class="fas fa-paper-plane"></i> Send Notification
+</a>
+
+            <div class="nav-label">Financials</div>
+            <a href="#" class="nav-item" onclick="route('withdrawals')">
+    <i class="fas fa-university"></i>
+    <span>Withdraw Requests</span>
+</a>
+            <a href="#" class="nav-item" onclick="route('portfolios')"><i class="fas fa-wallet"></i>Deposits</a>
+
+            <a href="#" class="nav-item" onclick="route('notifications')">
+            <i class="fas fa-bell"></i>Deposit Alert 
+            <span id="notify-badge" style="background: #f0b90b; color: #000; border-radius: 50%; padding: 2px 6px; font-size: 10px; margin-left: 5px; display: none;">0</span>
+            </a>
+
+            <div class="nav-label">Support System</div>
+<a href="#" class="nav-item" onclick="route('chat')">
+    <i class="fas fa-comments"></i> Customer Chat
+    <span id="chat-badge" style="background: #ff4d4d; color: #fff; border-radius: 50%; padding: 2px 8px; font-size: 12px; margin-left: 5px; display: none; font-weight: bold;">0</span>
+</a>
+
+        </div>
+
+    </aside>
+
+    <div class="main-wrapper">
+      
+        <header>
+    <div style="display: flex; align-items: center;">
+        <div id="mobile-menu-btn" onclick="toggleSidebar()" style="display: none; font-size: 22px; cursor: pointer; color: var(--accent); margin-right: 15px;">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="pageTitle"></div>
+    </div>
+
+    <div class="header-right">
+        <div id="liveTime"></div>
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            <span style="font-size: 12px; font-weight: 600; color: var(--success);">Server Online</span>
+        </div>
+    </div>
+</header>
+
+        <div class="container" id="view-container">
+            </div>
+    </div>
+
+    <div id="deleteConfirmModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content" style="width: 400px; text-align: center;">
+        <div style="font-size: 50px; color: #dc2626; margin-bottom: 20px;">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3 style="margin-bottom: 10px;">Are you sure?</h3>
+        <p style="color: var(--muted); margin-bottom: 25px;">This action cannot be undone. This user will be permanently deleted.</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="closeDeleteModal()" style="background: var(--border); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Cancel</button>
+            <button id="confirmDeleteBtn" style="background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Delete Now</button>
+        </div>
+    </div>
+</div>
+
+<div id="adminOtpModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center;">
+    <div style="background:#1e222d; padding:25px; border-radius:15px; width:90%; max-width:350px; border:1px solid var(--border); color:#fff;">
+        <h3 style="margin-bottom:15px; font-size:18px;">Set Verification Code</h3>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:20px;">Enter a 6-digit OTP to send to the user.</p>
+        
+        <input type="number" id="manualOtp" placeholder="Ex: 556677" 
+               style="width:100%; padding:12px; background:#0d1117; border:1px solid var(--border); border-radius:8px; color:#fff; font-size:20px; text-align:center; letter-spacing:5px; margin-bottom:20px;">
+        
+        <div style="display:flex; gap:10px;">
+            <button onclick="closeOtpModal()" style="flex:1; padding:10px; background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:8px; cursor:pointer;">Cancel</button>
+            <button onclick="confirmAndSendOtp()" style="flex:1; padding:10px; background:var(--accent); color:#000; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Code</button>
+        </div>
+    </div>
+</div>
+
+<div id="tradeEditModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; justify-content:center; align-items:center; padding:20px; backdrop-filter: blur(5px);">
+    <div style="background:#1e222d; padding:25px; border-radius:15px; width:100%; max-width:500px; border:1px solid var(--border); color:#fff; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        
+        <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px; color:var(--accent); flex-shrink: 0;">
+            <i class="fas fa-edit"></i> Edit Trade Record
+        </h3>
+
+        <div class="inner-scrollbar" style="overflow-y: auto; flex-grow: 1; padding-right: 5px;">
+            <form id="tradeEditForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                </form>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:25px; flex-shrink: 0; border-top: 1px solid var(--border); padding-top: 15px;">
+            <button onclick="closeTradeEditModal()" style="flex:1; padding:12px; background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:8px; cursor:pointer;">Cancel</button>
+            <button onclick="saveTradeEdit()" style="flex:1; padding:12px; background:var(--accent); color:#000; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Update Now</button>
+        </div>
+    </div>
+</div>
+
+<div id="float-noti-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+<audio id="notiSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+
+    <script src="adminapp.js"></script>
+</body>
+</html>

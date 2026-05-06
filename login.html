@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptoonchainpro.com - Sign in / Sign up Form</title>
+    <link rel="shortcut icon" href="./login/Img/Logo.jpg" type="image/svg+xml">
+
+    <link rel="stylesheet" href="Login/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #061121;
+            --nav-bg: #0a1426;
+            --card-bg: #101a2e;
+            --accent-blue: #1199fa;
+            --accent-hover: #0a7cd1;
+            --text-main: #ffffff;
+            --text-muted: #8491a5;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Topbar --- */
+        .topbar {
+            height: 64px;
+            background: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Logo Image Style */
+        .logo img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover; /* contain ကနေ cover ပြောင်းရင် ပိုလှပါတယ် */
+    border-radius: 50%; /* ဒါက ပုံကို အဝိုင်းဖြစ်စေတာပါ */
+    border: 1px solid var(--border-color); /* အဝိုင်းလေး ပိုပေါ်လွင်အောင် border လေး ထည့်လို့ရပါတယ် (optional) */
+}
+
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* --- Main Layout --- */
+        .page-wrapper {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 60px 40px;
+            align-items: center;
+            gap: 80px;
+        }
+
+        /* --- Auth Card --- */
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 480px;
+            justify-self: end;
+        }
+
+        .auth-header-tabs {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 35px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-header-tab {
+            padding-bottom: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .auth-header-tab.active { color: var(--text-main); }
+        .auth-header-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 100%; height: 2px;
+            background: var(--accent-blue);
+        }
+
+        .method-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .method-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .method-tab.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- QR Section --- */
+        .qr-wrapper { text-align: center; }
+        .qr-box {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+        }
+        .qr-box img { width: 100%; height: 100%; }
+
+        /* --- Input Styles --- */
+        .form-group { margin-bottom: 18px; position: relative; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); }
+        
+        .input-container { position: relative; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0a1426;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        input:focus { outline: none; border-color: var(--accent-blue); }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .referral-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-blue);
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        /* --- Social Buttons --- */
+        .social-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+            position: relative;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+        .social-btn:hover { background: rgba(255, 255, 255, 0.05); }
+
+        /* --- Hero Content --- */
+        .hero-title {
+            font-size: 35px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .hero-desc {
+            font-size: 22px;
+            color: #ffffff;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            opacity: 0.9;
+            text-align: center;
+        }
+
+        .hero-image-box {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-image-box img { width: 100%; display: block; }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 992px) {
+    .logo { 
+        font-size: 18px; /* ၁၆ ထက် ၁၈ က ပိုဖတ်ရတာ အဆင်ပြေနိုင်ပါတယ် */
+        gap: 8px; 
+    }
+    .logo img { 
+        width: 30px; 
+        height: 30px; 
+    }
+}
+
+        /* --- Mobile Responsive Updates --- */
+        @media (max-width: 992px) {
+            .page-wrapper { grid-template-columns: 1fr; padding: 40px 20px; }
+            .login-card { justify-self: center; order: 2; }
+            .hero-content { text-align: center; order: 1; }
+            .hero-title { font-size: 42px; }
+            
+            .topbar { padding: 0 20px; }
+            .logo { font-size: 16px; } /* Small font for mobile name */
+            .logo img { width: 26px; height: 26px; }
+
+            footer {
+                flex-direction:column; /* Copyright at bottom */
+                align-items: center;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+
+        /* Toast Container */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+
+/* Toast Style */
+.toast {
+    background: var(--card-bg);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--accent-blue);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    min-width: 280px;
+    animation: slideIn 0.3s ease forwards;
+}
+
+.toast.success { border-left-color: #00c853; }
+.toast.error { border-left-color: #ff5252; }
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+.otp-box:focus {
+    border-color: var(--accent-blue) !important;
+    outline: none;
+    box-shadow: 0 0 5px rgba(17, 153, 250, 0.3);
+}
+
+    </style>
+
+    
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+  // သင့်ရဲ့ Firebase Console ကနေရလာတဲ့ config ကို ဒီမှာ အစားထိုးပါ
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQ4uu3RzFI9upozRFfmsqpA_0ab3PxjSs",
+    authDomain: "crypto-onchain-pro.firebaseapp.com",
+    databaseURL: "https://crypto-onchain-pro-default-rtdb.firebaseio.com",
+    projectId: "crypto-onchain-pro",
+    storageBucket: "crypto-onchain-pro.firebasestorage.app",
+    messagingSenderId: "696320522112",
+    appId: "1:696320522112:web:fb09b5a4981fe2d3e6f365"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <nav class="topbar">
+        <a href="#" class="logo">
+            <img src="Img/Logo.jpg" alt="Logo">
+            <span>Crypto On-Chain Pro</span>
+        </a>
+        <div class="nav-links">
+            <a href="#">Back</a>
+        </div>
+    </nav>
+
+    <main class="page-wrapper">
+        <section class="login-container">
+            <div class="login-card">
+                <div class="auth-header-tabs">
+                    <div class="auth-header-tab active" onclick="toggleAuthMode('login', this)">Log In</div>
+                    <div class="auth-header-tab" onclick="toggleAuthMode('signup', this)">Sign Up</div>
+                </div>
+
+                <div id="login-form-area" class="sign-in-form">
+                    <div class="method-tabs">
+                        <div class="method-tab active" onclick="switchLoginMethod('qr', this)">QR Code</div>
+                        <div class="method-tab" onclick="switchLoginMethod('passkey', this)">Passkey</div>
+                        <div class="method-tab" onclick="switchLoginMethod('email', this)">Email</div>
+                    </div>
+
+                    <div id="qr-panel" class="tab-panel active">
+                        <div class="qr-wrapper">
+                            <p style="color:var(--text-main); font-size:15px; font-weight: 500;">
+                                Scan with your phone camera or the app to login instantly
+                            </p>
+                            <div class="qr-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CryptoExchangeLogin" alt="QR Code">
+                            </div>
+                            <ul style="list-style:none; text-align:left; background:rgba(255,255,255,0.03); padding:15px; border-radius:8px; font-size:13px; color:var(--text-muted);">
+                                <li style="margin-bottom:8px;">Scan with App:</li>
+                                <li style="margin-bottom:8px;">• Open the Crypto On-Chain Pro</li>
+                                <li style="margin-bottom:8px;">• Tap Menu > Settings > QR Code Scanner</li>
+                                <li>• Scan the QR code</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="email-panel" class="tab-panel">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="loginContact" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div class="input-container">
+                                <input type="password" id="loginPass" placeholder="Enter password">
+                                <i class="fas fa-eye toggle-password" onclick="toggleVisibility('loginPass')"></i>
+                            </div>
+                            <a href="javascript:void(0)" onclick="openForgotModal()" id="forgot-link" style="color:var(--accent-blue); font-size:13px; text-decoration:none; display:inline-block; margin-top:10px;">Forgot Password?</a>
+                        </div>
+                        <button type="button" class="btn-full" onclick="handleLogin()">Log In</button>
+
+                        <div class="social-divider">OR</div>
+                        <button class="social-btn" onclick="handleGoogleLogin()">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="Google">
+                            Continue with Google
+                        </button>
+
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:20px; text-align:center; line-height: 1.5;">
+                            By submitting your email, you confirm you've read the relevant 
+                            <a href="#" style="color:var(--accent-blue); text-decoration:none;">Privacy Notice</a>.
+                        </p>
+                    </div>
+
+                    <div id="passkey-panel" class="tab-panel">
+                        <div style="text-align:center; padding:20px 0;">
+                            <p style="color:var(--text-muted); margin-bottom:20px;">Securely login using your device's biometric or security key.</p>
+                            <button class="btn-full" style="background:transparent; border:1px solid var(--accent-blue); color:var(--accent-blue);">Continue with Passkey</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="signup-form-area" class="sign-up-form" style="display:none;">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="regContact" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-container">
+                            <input type="password" id="regPass" placeholder="Create a password">
+                            <i class="fas fa-eye toggle-password" onclick="toggleVisibility('regPass')"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="input-container">
+                            <input type="password" id="regConfirmPass" placeholder="Confirm password">
+                            <i class="fas fa-eye toggle-password" onclick="toggleVisibility('regConfirmPass')"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="referral-toggle" onclick="toggleReferral()">
+                        Referral Code (Optional) <i id="ref-icon" class="fas fa-chevron-down" style="font-size:12px;"></i>
+                    </div>
+                    <div id="ref-box" class="form-group" style="display:none;">
+                        <input type="text" placeholder="Enter referral code">
+                    </div>
+
+                    <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                        <input type="checkbox" id="offers" style="width:18px; height:18px; cursor:pointer; accent-color: var(--accent-blue);">
+                        <label for="offers" style="font-size:13px; line-height:1.4; color: var(--text-muted); cursor:pointer;">
+                            I'd like to receive exclusive offers and updates from Crypto.com
+                        </label>
+                    </div>
+
+                    <button type="button" class="btn-full" onclick="handleSignUp()">Create Account</button>
+
+                    <div class="social-divider">OR</div>
+
+                    <button class="social-btn" onclick="handleGoogleLogin()">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="Google">
+                        Continue with Google
+                    </button>
+
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:20px; text-align:center; line-height: 1.5;">
+                        By submitting your email, you confirm you've read the relevant 
+                        <a href="#" style="color:var(--accent-blue); text-decoration:none;">Privacy Notice</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero-content">
+            <h1 class="hero-title">The premier crypto service provider</h1>
+            <p class="hero-desc">Trusted by 150+ million users globally. </p>
+            <div class="hero-image-box">
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=1000" alt="Trading Dashboard">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+
+        <div class="copyright">Copyright © 2018 - 2026 Cryptoonchainpro.com. All rights reserved.</div>
+
+        <div class="footer-links" style="display:flex; gap:20px;">
+            <a href="#" style="color:var(--text-muted); text-decoration:none;">Privacy Notice</a>
+            <a href="#" style="color:var(--text-muted); text-decoration:none;">Legal</a>
+            <a href="#" style="color:var(--text-muted); text-decoration:none;">Status</a>
+            <a href="#" style="color:var(--text-muted); text-decoration:none;">Terms and Conditions</a>
+            <a href="#" style="color:var(--text-muted); text-decoration:none;">Cookie Preferences</a>
+        </div>
+       
+    </footer>
+
+    <script>
+        function toggleAuthMode(mode, element) {
+            const loginArea = document.getElementById('login-form-area');
+            const signupArea = document.getElementById('signup-form-area');
+            const tabs = document.querySelectorAll('.auth-header-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            if(mode === 'signup') {
+                loginArea.style.display = 'none';
+                signupArea.style.display = 'block';
+            } else {
+                loginArea.style.display = 'block';
+                signupArea.style.display = 'none';
+            }
+        }
+
+        function switchLoginMethod(method, element) {
+            const panels = document.querySelectorAll('.tab-panel');
+            const tabs = document.querySelectorAll('.method-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            panels.forEach(p => p.classList.remove('active'));
+            document.getElementById(method + '-panel').classList.add('active');
+        }
+
+        function toggleVisibility(id) {
+            const input = document.getElementById(id);
+            const icon = input.nextElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function toggleReferral() {
+            const refBox = document.getElementById('ref-box');
+            const refIcon = document.getElementById('ref-icon');
+            if (refBox.style.display === 'none') {
+                refBox.style.display = 'block';
+                refIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                refBox.style.display = 'none';
+                refIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+// --- Login Logic ---
+function handleLogin() {
+    const contactInput = document.querySelector('#loginContact').value.trim();
+    const passwordInput = document.querySelector('#loginPass').value;
+
+    if (!contactInput || !passwordInput) {
+        showToast("Please fill all fields!", "error");
+        return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const authCredential = emailPattern.test(contactInput) ? contactInput : `${contactInput.replace('+', '')}@phone.com`;
+
+    auth.signInWithEmailAndPassword(authCredential, passwordInput)
+        .then((userCredential) => {
+            const userUid = userCredential.user.uid;
+            db.ref('users/' + userUid).once('value').then((snapshot) => {
+                const userData = snapshot.val();
+                if (userData) {
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    showToast("Login Successful!", "success");
+                    
+                    setTimeout(() => {
+                        if(userData.role === "admin" || contactInput === "admin@cryptoonchainpro.com") {
+                            window.top.location.href = "admin.html";
+                        } else {
+                            window.top.location.href = "main.html";
+                        }
+                    }, 1000);
+                }
+            });
+        })
+        .catch((error) => {
+            // ဒီနေရာမှာ alert() ကျန်မနေစေဖို့ သတိပြုပါ
+            showToast("Error: Invalid Login Credentials!", "error");
+            console.error(error.message);
+        });
+}
+
+// --- Sign Up Logic ---
+function handleSignUp() {
+    const nameInput = document.querySelector("#regName").value.trim();
+    const contactInput = document.querySelector("#regContact").value.trim();
+    const passInput = document.querySelector("#regPass").value;
+    const confirmPassInput = document.querySelector("#regConfirmPass").value;
+
+    // Validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailPattern.test(contactInput);
+
+    if (!isEmail) {
+        showToast("Error: Please enter a valid Email!", "error");
+        return;
+    }
+    if (passInput !== confirmPassInput) {
+        showToast("Error: Passwords do not match!", "error");
+        return;
+    }
+    if (passInput.length < 6) {
+        showToast("Error: Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    const authCredential = contactInput;
+
+    auth.createUserWithEmailAndPassword(authCredential, passInput)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            
+            const newUser = {
+                uid: user.uid,
+                displayId: "UID: " + Math.floor(1000000000 + Math.random() * 9000000000),
+                name: nameInput,
+                contact: contactInput,
+                password: passInput,
+                level: "Level-1",
+                balance: "0.00 USDT",
+                status: "Unverified",
+                joined: new Date().toLocaleDateString(),
+                device: navigator.platform 
+            };
+
+            return db.ref('users/' + user.uid).set(newUser).then(() => {
+                showToast("Registration Successful!", "success");
+                
+                // Form ကို Reset လုပ်ခြင်း
+                document.querySelector("#regName").value = "";
+                document.querySelector("#regContact").value = "";
+                document.querySelector("#regPass").value = "";
+                document.querySelector("#regConfirmPass").value = "";
+
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                setTimeout(() => { window.top.location.href = "main.html"; }, 2000);
+            });
+        })
+        .catch((error) => {
+            // စာသားကို သန့်စင်ရန် ဤနေရာတွင် ပြင်ဆင်ထားသည်
+            let customMessage = error.message;
+
+            if (error.code === 'auth/email-already-in-use') {
+                customMessage = "The email address is already in use by another account.";
+            } else if (error.code === 'auth/invalid-email') {
+                customMessage = "The email address is badly formatted.";
+            } else if (error.code === 'auth/weak-password') {
+                customMessage = "The password must be at least 6 characters.";
+            }
+
+            showToast(customMessage, "error");
+        });
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    // Icon သတ်မှတ်ခြင်း
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // ၃ စက္ကန့်ကြာရင် ပြန်ဖျောက်မယ်
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// --- Forgot Password Flow ---
+const forgotModal = document.getElementById("forgotPasswordModal");
+const forgotLink = document.getElementById("forgot-link"); // ID ကို matching ဖြစ်အောင် ပြင်ထားသည်
+
+// Modal ဖွင့်ရန် Function
+function openForgotModal() {
+    const forgotModal = document.getElementById("forgotPasswordModal");
+    if (forgotModal) {
+        forgotModal.style.display = "flex";
+        // ပထမအဆင့် (Step 1) ကနေ ပြန်စဖို့
+        document.getElementById("step1-check").style.display = "block";
+        document.getElementById("step2-otp").style.display = "none";
+        document.getElementById("step3-newpass").style.display = "none";
+    } else {
+        console.error("forgotPasswordModal ကို ရှာမတွေ့ပါ!");
+    }
+}
+
+// Modal ပိတ်ရန် Function
+function closeForgotModal() {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+}
+
+let targetUserUid = null;
+let targetUserData = null;
+
+// --- Auto Generate OTP & Send via Google Script ---
+function autoGenerateAndSendOtp(userRequest, uid) {
+    const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwRG46kqIuQuOelqAI5-8PHES7jGPje9BE0-Htaaywhq_qelSAqqwKOusfC3YXICURhYQ/exec"; 
+
+    const formData = new FormData();
+    formData.append("email", userRequest.contact);
+    formData.append("otp", randomOtp);
+    formData.append("name", userRequest.name);
+
+    fetch(webAppUrl, {
+        method: "POST",
+        body: formData,
+        mode: 'no-cors' // Google Script အတွက် လိုအပ်နိုင်သည်
+    })
+    .then(() => {
+        console.log("OTP Request Sent to Google Script");
+        // OTP ကို ယာယီသိမ်းထားခြင်း
+        let activeOtps = JSON.parse(localStorage.getItem('active_reset_otps')) || {};
+        activeOtps[uid] = randomOtp;
+        localStorage.setItem('active_reset_otps', JSON.stringify(activeOtps));
+    })
+    .catch(err => console.error("Auto Send Error:", err));
+}
+
+// --- အကောင့် ရှိမရှိ စစ်ဆေးခြင်း (Firebase Database တွင်ရှာမည်) ---
+function checkAccount() {
+    const contact = document.querySelector("#forgotContact").value.trim();
+    if (!contact) return showToast("Please enter email!", "error");
+
+    // Firebase Database ထဲမှာ Email နဲ့ User ကို ရှာခြင်း
+    db.ref('users').orderByChild('contact').equalTo(contact).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            targetUserUid = Object.keys(data)[0];
+            targetUserData = data[targetUserUid];
+
+            // OTP ပို့ခြင်း
+            autoGenerateAndSendOtp(targetUserData, targetUserUid);
+
+            showToast("OTP code sent to your email!", "success");
+            document.getElementById("step1-check").style.display = "none";
+            document.getElementById("step2-otp").style.display = "block";
+        } else {
+            showToast("Account not found in our database!", "error");
+        }
+    });
+}
+
+// --- OTP ကို စစ်ဆေးခြင်း ---
+function verifyOTP() {
+    // အကွက် ၆ ကွက်လုံးက ဂဏန်းတွေကို စုပေါင်းလိုက်ခြင်း
+    const otpBoxes = document.querySelectorAll('.otp-box');
+    let userInputOtp = "";
+    otpBoxes.forEach(box => {
+        userInputOtp += box.value;
+    });
+
+    // Admin သတ်မှတ်ပေးထားတဲ့ (သို့မဟုတ်) LocalStorage ထဲက OTP ကို ယူမယ်
+    let activeOtps = JSON.parse(localStorage.getItem('active_reset_otps')) || {};
+    const correctOtp = activeOtps[targetUserUid];
+
+    if (userInputOtp.length < 6) {
+        return showToast("Please enter all 6 digits!", "error");
+    }
+
+    if (userInputOtp === correctOtp) {
+        showToast("OTP Verified! Set your new password.", "success");
+        
+        // သုံးပြီးသား OTP ကို ပြန်ဖျက်မယ်
+        delete activeOtps[targetUserUid];
+        localStorage.setItem('active_reset_otps', JSON.stringify(activeOtps));
+
+        document.getElementById("step2-otp").style.display = "none";
+        document.getElementById("step3-newpass").style.display = "block";
+    } else {
+        showToast("Invalid OTP Code! Please check again.", "error");
+    }
+}
+
+// --- Password အသစ် သတ်မှတ်ခြင်း ---
+function setNewPassword() {
+    const newPw = document.getElementById("newPass").value;
+    const confirmPw = document.getElementById("confirmNewPass").value;
+
+    if (newPw.length < 6) return showToast("Password must be at least 6 characters!", "error");
+    if (newPw !== confirmPw) return showToast("Passwords do not match!", "error");
+
+    // 1. Firebase Auth Password ပြောင်းလဲခြင်း (Logged in ဖြစ်မှရမည် - သို့သော် Admin side ကနေ ပြောင်းတာ ပိုစိတ်ချရသည်)
+    // ဤနေရာတွင် Database ထဲက password ကို အရင် update လုပ်ပါမည်။
+    db.ref('users/' + targetUserUid).update({
+        password: newPw
+    }).then(() => {
+        showToast("Password updated successfully!", "success");
+        setTimeout(() => location.reload(), 1500);
+    }).catch(err => {
+        showToast("Update failed: " + err.message, "error");
+    });
+}
+
+// Modal အတွင်းရှိ password မျက်လုံး icon အတွက်
+function togglePass(id, icon) {
+    const input = document.getElementById(id);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+// နောက်တစ်ကွက်သို့ အလိုအလျောက်ကူးရန်
+function moveToNext(current, index) {
+    if (current.value.length >= 1 && index < 5) {
+        document.querySelectorAll('.otp-box')[index + 1].focus();
+    }
+}
+
+// Backspace နှိပ်လျှင် ရှေ့ကွက်သို့ ပြန်သွားရန်
+function moveBack(current, index) {
+    if (event.key === "Backspace" && current.value === "" && index > 0) {
+        document.querySelectorAll('.otp-box')[index - 1].focus();
+    }
+}
+
+function handleGoogleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    // Popup window ဖြင့် Login ဝင်ခြင်း
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            
+            // Database ထဲမှာ အကောင့်ရှိမရှိ စစ်ဆေးခြင်း
+            db.ref('users/' + user.uid).once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    // အကောင့်ရှိပြီးသားဆိုလျှင်
+                    const userData = snapshot.val();
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    showToast("Google Login Success!", "success");
+                    setTimeout(() => { window.top.location.href = "main.html"; }, 1000);
+                } else {
+                    // အကောင့်မရှိသေးလျှင် အသစ်တည်ဆောက်ခြင်း
+                    const newUser = {
+                        uid: user.uid,
+                        displayId: "UID: " + Math.floor(1000000000 + Math.random() * 9000000000),
+                        name: user.displayName,
+                        contact: user.email,
+                        password: "social-login", 
+                        level: "Level-1",
+                        balance: "0.00 USDT",
+                        status: "Unverified",
+                        joined: new Date().toLocaleDateString(),
+                        device: navigator.platform 
+                    };
+
+                    db.ref('users/' + user.uid).set(newUser).then(() => {
+                        localStorage.setItem('currentUser', JSON.stringify(newUser));
+                        showToast("Registered with Google!", "success");
+                        setTimeout(() => { window.top.location.href = "main.html"; }, 1500);
+                    });
+                }
+            });
+        })
+        .catch((error) => {
+            showToast("Login Failed: " + error.message, "error");
+        });
+}
+
+    </script>
+
+    <div id="forgotPasswordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#c7c7ca; padding:30px; border-radius:15px; width:90%; max-width:400px; position:relative;">
+        <span onclick="closeForgotModal()" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:24px;">&times;</span>
+        
+        <div id="step1-check">
+            <h3 style="color:#333; margin-bottom:15px; font-weight:bold;">Reset Password</h3>
+            <p style="font-size:13px; color:#666; margin-bottom:15px;">Enter your registered Email/Phone to verify.</p>
+            <input type="text" id="forgotContact" placeholder="Email or Phone" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; margin-bottom:15px;">
+            <button onclick="checkAccount()" class="btn" style="width:100%; margin:0;">Verify Account</button>
+        </div>
+
+                <div id="step2-otp" style="display:none;">
+                    <h3 style="color:#333; margin-bottom:15px; font-weight:bold;">Enter OTP</h3>
+                    <p style="font-size:13px; color:#666; margin-bottom:15px;">A code has been sent to your email.</p>
+                    
+                    <div class="otp-container" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="moveBack(this, 0)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 1)" onkeydown="moveBack(this, 1)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 2)" onkeydown="moveBack(this, 2)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="moveBack(this, 3)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="moveBack(this, 4)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                        <input type="text" class="otp-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="moveBack(this, 5)" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #ddd; border-radius: 8px; color: #fff;">
+                    </div>
+
+                    <button onclick="verifyOTP()" class="btn-full" style="width:100%; margin:0;">Verify OTP</button>
+                </div>
+
+        <div id="step3-newpass" style="display:none;">
+    <h3 style="color:#333; margin-bottom:15px; font-weight:bold;">New Password</h3>
+    
+    <div style="position: relative; margin-bottom: 10px;">
+        <input type="password" id="newPass" placeholder="New Password" style="width:100%; padding:12px; padding-right: 40px; border:1px solid #ddd; border-radius:8px;">
+        <i class="fas fa-eye toggle-eye" onclick="togglePass('newPass', this)" style="position: absolute; right: 12px; top: 15px; cursor: pointer; color: #666;"></i>
+    </div>
+
+    <div style="position: relative; margin-bottom: 15px;">
+        <input type="password" id="confirmNewPass" placeholder="Confirm New Password" style="width:100%; padding:12px; padding-right: 40px; border:1px solid #ddd; border-radius:8px;">
+        <i class="fas fa-eye toggle-eye" onclick="togglePass('confirmNewPass', this)" style="position: absolute; right: 12px; top: 15px; cursor: pointer; color: #666;"></i>
+    </div>
+
+    <button onclick="setNewPassword()" class="btn" style="width:100%; margin:0;">Reset Password</button>
+</div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    
+
+</body>
+</html>

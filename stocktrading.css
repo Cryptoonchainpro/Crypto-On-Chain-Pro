@@ -1,0 +1,1492 @@
+ * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #0b0e11;
+    color: #eaecef;
+    font-size: 12px;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 3. Trading Tools (Always Side-by-Side) */
+.trading-tools {
+    display: flex; /* အမြဲတမ်း ဘေးတိုက်ထားမယ် */
+    width: 100%;
+    background: #1e2329;
+    border-top: 1px solid #2b3139;
+    border-bottom: 1px solid #2b3139;
+}
+
+.tool-box {
+    flex: 1; /* အကျယ်ကို ညီတူညီမျှ ခွဲယူမယ် */
+    padding: 10px;
+    border-right: 1px solid #2b3139;
+}
+.tool-box:last-child { border-right: none; }
+
+.label { color: #848e9c; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
+
+/* Order Book */
+.row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.price-mid { text-align: center; font-size: 16px; font-weight: bold; margin: 8px 0; color: #fff; }
+
+/* Order Form */
+.order-form input {
+    width: 100%; background: #2b3139; border: 1px solid #474d57;
+    color: #fff; padding: 8px; margin-bottom: 10px; border-radius: 4px;
+}
+.action-btns { display: flex; gap: 5px; }
+.action-btns button { flex: 1; border: none; padding: 10px; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer; }
+.buy { background: #0ecb81; }
+.sell { background: #f6465d; }
+
+/* 4. History - Bottom Auto Fit */
+.trade-history {
+    height: 150px;
+    background: #1e2329;
+    padding: 10px;
+}
+.table-scroll { overflow-y: auto; height: 110px; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { color: #848e9c; padding-bottom: 5px; }
+td { padding: 5px 0; border-bottom: 1px solid #2b3139; }
+
+.green { color: #0ecb81; }
+.red { color: #f6465d; }
+.up { color: #0ecb81; }
+
+/* ... အရင် CSS အဟောင်းထဲမှာ အောက်ပါအပိုင်းကို ထပ်ဖြည့်/ပြင်ပါ ... */
+
+.order-tabs {
+    display: flex; gap: 15px; margin-bottom: 12px;
+    border-bottom: 1px solid #2b3139; padding-bottom: 5px;
+}
+.order-tabs span { cursor: pointer; color: #848e9c; font-size: 15px; }
+.order-tabs span.active { color: #848e9c; font-weight: bold; border-bottom: 2px solid #ffffff; }
+
+.input-row {
+    background: #2b3139; display: flex; align-items: center;
+    padding: 5px 8px; border-radius: 4px; margin-bottom: 8px;
+}
+.input-row label { width: 50px; color: #848e9c; font-size: 11px; }
+.input-row input {
+    background: none; border: none; color: white; width: 100%; text-align: right; outline: none;
+}
+
+.risk-label { font-size: 11px; margin: 10px 0 5px; }
+.risk-slider {
+    width: 100%; margin-bottom: 15px; cursor: pointer; accent-color: #f0b90b;
+}
+
+/* Order Book Styling */
+.row { display: flex; justify-content: space-between; font-size: 11px; height: 18px; }
+.asks-container { display: flex; flex-direction: column-reverse; } /* Asks ကို အောက်ကနေ အပေါ်စီမယ် */
+
+/* Hide TradingView Logo Hack */
+iframe { pointer-events: auto !important; }
+
+/* Order Book Header Styling */
+.book-header {
+    display: flex;
+    justify-content: space-between;
+    color: #848e9c;
+    font-size: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #2b3139;
+    margin-bottom: 5px;
+}
+
+/* Risk % Input Box Styling */
+.risk-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 5px 0;
+}
+.risk-container label { font-size: 11px; color: #848e9c; }
+#risk-input {
+    width: 60px;
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: #f0b90b;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+/* Adjust Delivery Spacing when above form */
+.delivery-contract {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2b3139;
+}
+
+/* History Table Width Adjustment */
+.trade-history table th, .trade-history table td {
+    padding: 8px 4px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+/* Layout Ratio Adjustment */
+.order-book {
+    flex: 1 !important; /* Page ၏ 33% ခန့် */
+}
+
+.trading-side {
+    flex: 2 !important; /* Page ၏ 66% ခန့် */
+}
+
+/* Order Book Font & Row Update */
+.book-list .row {
+    font-size: 14px; /* Font ကို ပိုကြီးအောင် လုပ်လိုက်သည် */
+    height: 24px;
+    font-weight: 500;
+}
+
+.price-mid {
+    font-size: 20px; /* အလယ်က စျေးနှုန်းကို ပိုကြီးအောင် လုပ်လိုက်သည် */
+    padding: 12px 0;
+}
+
+/* Beautiful Risk Input Design */
+.risk-container {
+    background: #2b3139;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #474d57;
+    margin-bottom: 10px;
+}
+
+.risk-input-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+#risk-input {
+    width: 45px;
+    background: transparent;
+    border: none;
+    color: #fffdf8;
+    font-weight: bold;
+    font-size: 14px;
+    outline: none;
+    text-align: right;
+}
+
+.pct-symbol {
+    color: #ffffff;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+/* Hide Spin Buttons for Chrome, Safari, Edge, Opera */
+#risk-input::-webkit-outer-spin-button,
+#risk-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Risk Boxes Styling */
+.risk-boxes {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+.r-box {
+    flex: 1;
+    background: #2b3139;
+    border: 1px solid #474d57;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 11px;
+}
+.r-box.active {
+    border-color: #ffffff;
+    color: #fdfdfd;
+}
+
+/* History Header & Controls */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.history-controls {
+    display: flex;
+    gap: 10px;
+}
+#history-search {
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+#toggle-history {
+    background: #002fff;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+}
+
+/* Delivery Item Cursor */
+.c-item { cursor: pointer; transition: 0.2s; }
+.c-item:hover { background: #363c45; }
+
+
+/* Market Overview Modern Style */
+.market-overview {
+    background: #1e2329;
+    padding: 20px;
+    border-bottom: 1px solid #2b3139;
+}
+
+.market-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.market-tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.market-tabs span {
+    color: #848e9c;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.market-tabs span.active {
+    color: #f0b90b;
+    border-bottom: 2px solid #f0b90b;
+    padding-bottom: 4px;
+}
+
+#market-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#market-table th {
+    color: #848e9c;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 12px 8px;
+    border-bottom: 1px solid #2b3139;
+    text-align: left;
+}
+
+#market-table td {
+    padding: 14px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid #2b3139;
+    transition: background 0.2s;
+}
+
+#market-table tr:hover td {
+    background: #2b3131;
+}
+
+.text-right { text-align: right; }
+
+.pair-name { font-weight: bold; color: #ffffff; }
+.pair-sub { color: #848e9c; font-size: 11px; margin-left: 4px; }
+
+.trade-btn {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    background-color: blue;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.3s;
+    
+}
+
+.trade-btn:hover {
+    background: #0b0070;
+    color: #ffffff;
+}
+
+/* Pagination Styling */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background: #2b3139;
+    color: #eaecef;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#page-numbers span {
+    margin: 0 5px;
+    font-size: 13px;
+    color: #848e9c;
+}
+
+/* Logo Styling */
+.pair-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.coin-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #2b3139; /* Loading ဖြစ်နေစဉ် ပြရန် */
+}
+
+/* Pagination Info */
+#page-info {
+    color: #848e9c;
+    font-size: 13px;
+    min-width: 80px;
+    text-align: center;
+}
+
+.loading-text {
+    padding: 20px;
+    text-align: center;
+    color: #f0b90b;
+}
+
+/* Search Box Styling */
+.search-container {
+    flex: 1;
+    max-width: 300px;
+    margin-left: 20px;
+}
+
+#market-search {
+    width: 100%;
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+#market-search:focus {
+    border-color: #ffffff;
+}
+
+/* Pagination Center */
+.pagination-center {
+    display: flex;
+    justify-content: center; /* ခလုတ်များကို အလယ်ပို့ခြင်း */
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+}
+
+/* Logo Stability (တုန်ခါမှု မဖြစ်အောင် လုပ်ခြင်း) */
+.coin-logo {
+    width: 24px;
+    height: 24px;
+    min-width: 24px; /* Space ကို ကြိုယူထားရန် */
+    min-height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #2b3139; /* ပုံမတက်ခင် နေရာလွတ်မဖြစ်စေရန် */
+}
+
+.pair-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px; /* စာသားကြောင့် ဘေးတိုက် မရွေ့စေရန် */
+}
+
+
+/* Logo တုန်ခါမှု မဖြစ်အောင် Fixed Size သတ်မှတ်ခြင်း */
+.pair-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 32px; /* Row height ကို ပုံသေထားခြင်း */
+}
+
+.coin-logo {
+    width: 24px;
+    height: 24px;
+    min-width: 24px; /* Space ကို ကြိုယူထားရန် */
+    max-width: 24px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #2b3139; /* ပုံမတက်ခင် နေရာလွတ်မဖြစ်စေရန် */
+    border: none;
+    display: block;
+}
+
+/* View All Button ကို ပိုကြီးပြီး ထင်ရှားအောင် လုပ်ခြင်း */
+#toggle-history {
+    background: #f0b90b;
+    color: #000;
+    border: none;
+    padding: 10px 24px; /* Size ကို တိုးမြှင့်ထားသည် */
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#toggle-history:hover {
+    background: #e2ad0a;
+    transform: scale(1.05); /* ထိလိုက်ရင် အနည်းငယ် ကြီးလာစေရန် */
+}
+
+.price-cell {
+    min-width: 100px; /* စျေးနှုန်းဂဏန်းများ ပြောင်းလဲချိန်တွင် နေရာမရွေ့စေရန် */
+    font-family: 'Courier New', monospace; /* ဂဏန်းများ ညီညာစေရန် */
+}
+
+/* Search Box ကို ပိုကျယ်အောင် ပြင်ဆင်ခြင်း */
+#history-search {
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 250px; /* အကျယ်ကို 250px ထိ တိုးလိုက်ပါတယ် */
+    outline: none;
+}
+
+#history-search:focus {
+    border-color: #f0b90b;
+}
+
+/* Table alignment ညှိခြင်း */
+#trade-table th, #trade-table td {
+    padding: 10px 8px;
+    text-align: left;
+    font-size: 11px;
+}
+
+.up { color: #00ffad; }
+.red { color: #ff3b3b; }
+
+/* Trade History Table Styles */
+#trade-table th, #trade-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #2b3139;
+}
+
+#trade-table th {
+    color: #848e9c;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+/* Dropdown Select Style */
+.dropdown-select {
+    width: 100%;
+    background: #2b3139;
+    color: white;
+    border: 1px solid #474d57;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Choice Box (TP/SL, Iceberg) Style */
+.choice-container {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.choice-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: #848e9c;
+    font-size: 11px;
+}
+
+.choice-box input {
+    cursor: pointer;
+}
+
+/* Choice Box (TP/SL, Iceberg) ကို အပေါ်အောက်စီခြင်း */
+.choice-container {
+    display: flex;
+    flex-direction: column; /* အပေါ်အောက်စီရန် */
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.choice-item {
+    display: flex;
+    align-items: center; /* Checkbox နဲ့ စာသား တစ်တန်းတည်းဖြစ်စေရန် */
+    gap: 8px;
+}
+
+.choice-item label {
+    cursor: pointer;
+    color: #eaecef;
+    font-size: 12px;
+    margin-bottom: 0; /* Alignment ညှိရန် */
+}
+
+.choice-item input[type="checkbox"] {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
+
+/* Risk Amount Box ကို USDT Box ကဲ့သို့ ပုံမှန်မြင်ကွင်းမျိုး ပြုလုပ်ခြင်း */
+#risk-amount-input {
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    font-weight: normal; /* ဘောင်ခတ်တာနဲ့ ထူးခြားတာတွေကို ဖယ်ရှားလိုက်သည် */
+    cursor: default;
+}
+
+
+/* Small Input Rows for TP/SL */
+.input-row.small { margin-top: 5px; }
+.input-row.small label { font-size: 10px; color: #848e9c; }
+.input-row.small input { padding: 5px; font-size: 11px; }
+
+
+/* Pair Selector ပိုလှအောင် ပြင်ဆင်ခြင်း */
+.pair-selector-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.dropbtn {
+    background: #2b3139;
+    padding: 12px 15px;
+    border: 1px solid #474d57;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.dropbtn:hover {
+    border-color: #f0b90b;
+}
+
+.dropbtn span#current-pair-display {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.arrow {
+    color: #848e9c;
+    font-size: 14px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #1e2329;
+    border: 1px solid #474d57;
+    border-radius: 6px;
+    margin-top: 4px;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.search-box-wrapper {
+    padding: 10px;
+    border-bottom: 1px solid #2b3139;
+}
+
+#pair-search {
+    width: 100%;
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* Scrollable List အပိုင်း */
+.scrollable-list {
+    max-height: 250px; /* အမြင့်ကို ကန့်သတ်ပြီး scroll ထည့်ခြင်း */
+    overflow-y: auto;
+}
+
+.pair-item {
+    padding: 10px 15px;
+    color: #eaecef;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pair-item:hover {
+    background: #2b3139;
+    color: #f0b90b;
+}
+
+/* Scrollbar ကို Binance Style ပြင်ခြင်း */
+.scrollable-list::-webkit-scrollbar {
+    width: 6px;
+}
+.scrollable-list::-webkit-scrollbar-thumb {
+    background: #474d57;
+    border-radius: 10px;
+}
+
+/* Pair Selector Styling */
+.pair-selector-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.dropbtn {
+    background: #2b3139;
+    padding: 10px 15px;
+    border: 1px solid #474d57;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.selected-pair-info {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1e2329;
+    width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1000;
+    border: 1px solid #474d57;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+.search-box-wrapper {
+    padding: 10px;
+    border-bottom: 1px solid #2b3139;
+}
+
+#pair-search {
+    width: 100%;
+    background: #2b3139;
+    border: 1px solid #474d57;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.pair-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.pair-item {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.pair-item:hover {
+    background: #2b3139;
+}
+
+.dynamic-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.twap-options {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.twap-options span {
+    background: #2b3139;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.optional-params-box {
+    border: 1px dashed #474d57;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+/* - CSS ထဲတွင် Dropdown စာသားအရောင် မှန်အောင်ပြင်ခြင်း */
+#order-type-select option {
+    background-color: #1e2329;
+    color: white;
+}
+
+/* Choice box spacing */
+.choice-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #848e9c;
+    font-size: 11px;
+}
+
+
+/* Button Active ဖြစ်တဲ့အခါ ပြမယ့် style */
+.r-box.active {
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+    background: rgba(253, 253, 253, 0.301);
+}
+
+.twap-asset-btn, .time-btn {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Optional Parameters box အတွက် အနည်းငယ် ပြင်ဆင်မှု */
+#optional-params-fields .input-row {
+    margin-bottom: 5px;
+}
+
+
+/* Button Select ဖြစ်တဲ့အခါ ပြမည့် ပုံစံ */
+.r-box.active {
+    border-color: #f5f5f5 !important;
+    color: #ffffff !important;
+    background: rgba(240, 185, 11, 0.1);
+}
+
+.twap-asset-btn, .time-btn {
+    cursor: pointer;
+}
+
+/* Button Select ဖြစ်သွားတဲ့အခါ ပြမည့် style */
+
+.r-box {
+    cursor: pointer; /* လက်ညှိုးပုံပေါ်အောင် */
+}
+
+
+/* */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: flex-end; /* Screen အောက်ခြေမှာ ကပ်ရန် */
+}
+
+.modal-content {
+    background-color: #1e2329;
+    width: 100%;
+    padding: 20px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.modal-header { color: #ffffff; margin-bottom: 5px; font-size: 18px; }
+.modal-caption { color: #848e9c; margin-bottom: 20px; font-size: 13px; }
+
+.agreement-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+.choice-item { display: flex; align-items: flex-start; gap: 10px; color: #eaecef; font-size: 12px; }
+.choice-item input { margin-top: 3px; cursor: pointer; }
+
+#open-now-btn {
+    width: 100%; padding: 12px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;
+}
+.open-now-disabled { background: #474d57; color: #848e9c; cursor: not-allowed !important; }
+.open-now-active { background: #0b1af0; color: #ebe2e2; }
+
+
+/* Market Overview ကို အဖွင့်အပိတ်လုပ်တဲ့အခါ ချောမွေ့စေရန် */
+.market-overview {
+    transition: all 0.3s ease-in-out;
+}
+
+#market-toggle-btn:hover {
+    background: #474d57 !important;
+}
+
+/* Icon အရောင်နှင့် ပုံစံ */
+#dropdown-icon {
+    font-size: 10px;
+    color: #848e9c;
+    transition: transform 0.3s;
+}
+
+/* Dropdown ပွင့်နေချိန် Icon ကို လှည့်ထားရန် */
+.rotated {
+    transform: rotate(180deg);
+}
+
+.chart-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.chart-icon svg path {
+    stroke: #848e9c; /* Icon အရောင် (မီးခိုးရောင်) */
+    transition: stroke 0.3s;
+}
+
+.chart-icon:hover svg path {
+    stroke: #f0b90b; /* Mouse တင်လိုက်ရင် Binance Yellow အရောင်ပြောင်းရန် (Optional) */
+}
+
+/* Google Translate Toolbar ကို ဖျောက်ခြင်း */
+.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon {
+    display: none !important;
+}
+body {
+    top: 0px !important;
+}
+.goog-te-menu-value {
+    display: none !important;
+}
+/* Modal scrollbar ကို လှပအောင်လုပ်ခြင်း */
+#lang-options::-webkit-scrollbar {
+    width: 4px;
+}
+#lang-options::-webkit-scrollbar-thumb {
+    background: #474d57;
+    border-radius: 10px;
+}
+
+/* Delivery Contract Widget Styling */
+.delivery-contract-widget {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #1e2329;
+    border-radius: 8px;
+}
+
+.delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.delivery-item {
+    background: #2b3139;
+    border: 1px solid #474d57;
+    padding: 8px 4px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+.delivery-item:hover {
+    border-color: #ffffff;
+}
+
+.delivery-item.active {
+    border-color: #ffffff;
+    background: rgba(8, 8, 14, 0.144);
+}
+
+.d-time {
+    color: #eaecef;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.d-profit {
+    color: #0ecb81;
+    font-size: 11px;
+}
+
+.delivery-item.active .d-time {
+    color: #ffffff;
+}
+
+/* 4. History - Bottom Auto Fit */
+.trade-history {
+    height: auto; /* Fixed height ကို ဖယ်ရှားပြီး auto ပြောင်းလဲထားသည် */
+    background: #1e2329;
+    padding: 10px;
+}
+.table-scroll { 
+    overflow-y: visible; /* Scrollbar ကို ဖျောက်ပြီး Content အလိုက် ရှည်ထွက်စေရန် */
+    height: auto; 
+}
+
+/* Notification Box ပုံစံ */
+.float-notification {
+    background-color: #f6465d; /* အနီရောင် */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    font-weight: bold;
+    min-width: 200px;
+    animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+}
+
+/* ဝင်လာသည့် Animation */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ပျောက်သွားသည့် Animation */
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(20px); }
+}
+
+/* Notification Box ပုံစံ */
+.float-notification1 {
+    background-color: #0ecb81; /* အောင်မြင်သည့်အတွက် အစိမ်းရောင် */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    font-weight: bold;
+    min-width: 220px;
+    font-size: 13px;
+    animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+}
+
+/* ဝင်လာသည့် Animation */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ပျောက်သွားသည့် Animation */
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(20px); }
+}
+
+
+/* trade.css ထဲတွင် ရှာပြီး အစားထိုးရန် */
+
+.trade-history {
+    height: 300px; /* Table တစ်ခုလုံးစာ အမြင့်ကို သတ်မှတ်ခြင်း (မိမိနှစ်သက်သလို ပြင်နိုင်သည်) */
+    background: #1e2329;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-scroll { 
+    overflow-y: auto; /* ဒေတာများလာပါက Scroll ပေါ်လာစေရန် */
+    height: 250px;    /* Scroll ဖြစ်စေချင်သည့် အမြင့် */
+    flex-grow: 1;
+}
+
+/* Table Header ကို Sticky (မရွေ့အောင်) ပြုလုပ်ခြင်း */
+.table-scroll table thead th {
+    position: sticky;
+    top: 0;
+    background: #1e2329; /* Background အရောင် တူရမည် (မတူပါက စာသားများ ထပ်နေတတ်သည်) */
+    z-index: 10;
+    border-bottom: 1px solid #2b3139;
+}
+
+
+.user-profile-dropdown { position: relative; display: inline-block; cursor: pointer; }
+
+.user-icon-wrapper { display: flex; align-items: center; gap: 8px; }
+
+.user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #f0b90b; }
+
+.dropdown-content {
+    display: none; 
+    position: absolute; 
+    left: -700%;            /* ဤနေရာကို left: 0; သို့ ပြောင်းလိုက်ပါ */
+    top: 35px;
+    background: #1e2329; 
+    min-width: 250px; 
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5); 
+    padding: 15px; 
+    z-index: 1000;
+}
+
+.user-info-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+.profile-circle {
+    width: 45px; height: 45px; background: #f0b90b; color: #000;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2rem;
+}
+
+.user-details h4 { margin: 0; color: #fff; font-size: 1rem; }
+.user-details p { margin: 0; font-size: 0.8rem; color: #848e9c; }
+
+.stat-item { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.9rem; color: #eaecef; }
+
+.badge-level { color: #eeece7; font-weight: bold; }
+.status-active { color: #ebf3f0; }
+
+.menu-link {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; color: #fff; text-decoration: none; border-top: 1px solid #2b3139;
+}
+
+.menu-link:hover { color: #f0b90b; }
+
+.logout-btn {
+    width: 100%; background: #2b3139; color: #f6465d; border: none;
+    padding: 10px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+}
+
+.binance-slider-container {
+    margin: 25px 0 15px 0;
+    position: relative;
+}
+
+/* Tooltip (Premium Blue) */
+.slider-tooltip {
+    position: absolute;
+    top: -28px;
+    background: #3772ff;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 10;
+}
+
+.slider-track-wrapper {
+    position: relative;
+    height: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* မျဉ်းကြောင်းကို အရောင်မှိန်မှိန်ပဲ အသေထားမည် */
+.slider-base-track {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #474d57;
+    border-radius: 2px;
+}
+
+.slider-dots {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+/* မရွေးရသေးသော ဆုံမှတ်များ (Grey) */
+.dot {
+    width: 12px;
+    height: 12px;
+    background: #2b3139; /* Box background နဲ့ တူအောင်ထားသည် */
+    border: 2px solid #474d57;
+    border-radius: 50%; /* ဝိုင်းဝိုင်းလေး သုံးပါမယ် */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* ရွေးချယ်လိုက်သော ဆုံမှတ် (အဖြူရောင် တောက်တောက်) */
+.dot.active {
+    background: #ffffff6c !important;
+    border-color: #ffffffab !important;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    color: #848e9c;
+    font-size: 11px;
+}
+
+/* Custom Range Slider Styling */
+#lev-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #eeede8;
+    border: 3px solid #1e2329;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+/* Tooltip transition */
+#lev-tooltip {
+    transition: left 0.1s ease-out;
+}
+
+/* Slider Custom Styling - Blue Theme */
+#def-lev-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #2563eb; /* Blue-600 */
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#def-lev-tooltip {
+    transition: left 0.1s ease-out;
+}
+
+/* Section နှင့် Container များ အမြင့် ကန့်သတ်ချက် လုံးဝမရှိစေရန် */
+.trade-history {
+    width: 100% !important;
+    height: auto !important; 
+    min-height: fit-content !important;
+    display: block !important;
+    background: #1e2329;
+}
+
+#history-container {
+    width: 100%;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+#positions-tab-content, #history-body {
+    height: auto !important;
+    display: block;
+}
+
+/* Card Style */
+.trade-card {
+    background: #1e2329;
+    border-bottom: 1px solid #2b3139;
+    padding: 15px 16px;
+    width: 100%;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Stocks Market Overview Section Starts */
+#stocks-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#stocks-table th {
+    color: #848e9c;
+    font-size: 11px;
+    padding: 12px 8px;
+    border-bottom: 1px solid #2b3139;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+#stocks-table td {
+    padding: 15px 8px;
+    border-bottom: 1px solid #2b3139;
+    font-size: 13px;
+    color: #eaecef;
+}
+
+#stocks-table tr:hover {
+    background-color: #2b3139;
+}
+
+
+/* Stocks Market Overview Section End */
+
+
+/* futuretrades.css ရဲ့ အပေါ်ဆုံးမှာ အစားထိုးပါ */
+:root {
+    --bg-main: #061121;      /* Crypto.com-style Deep Blue */
+    --bg-card: #101b2b;      /* Slightly lighter blue for sections */
+    --border-color: #1e2c3f; /* Border color to match */
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: #eaecef;
+    font-size: 12px;
+}
+
+/* ရှိပြီးသား .trade-history နဲ့ တခြား section တွေကို background ပြောင်းမယ် */
+.trade-history, .main-wrapper, .trading-tools, .tool-box {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+
+.trade-card {
+    background: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Button တွေရဲ့ အရောင်ကို Crypto.com Blue ပြောင်းရန် */
+.bg-blue-600 {
+    background-color: #1199fa !important;
+}
+
+.text-blue-500 {
+    color: #1199fa !important;
+}
+
+.border-blue-500 {
+    border-color: #1199fa !important;
+}
+
+/* Market Overview Sections အတွက် အရောင်သစ်များ */
+#market-full-container, 
+#market-overview-section, 
+#stocks-overview,
+.market-content-inner {
+    background-color: var(--bg-main) !important;
+}
+
+/* Table Header နဲ့ Rows တွေအတွက် အရောင်ညှိခြင်း */
+#crypto-table th, #stocks-table th {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#crypto-table tr:hover, #stocks-table tr:hover {
+    background-color: #162439 !important; /* Hover လုပ်ရင် အပြာရောင် ခပ်ဖျော့ဖျော့ပြောင်းရန် */
+}
+
+#crypto-table td, #stocks-table td {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Toggle Content (Market Overview ပွင့်လာတဲ့ Panel) */
+#market-full-container {
+    border-left: 1px solid var(--border-color);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+}
+
+ 
+ :root {
+            --bg-black: #061121;
+            --bg-panel: #061121;
+            --border: #2a2e39;
+            --text-main: #d1d4dc;
+            --text-muted: #787b86;
+            --up: #089981;
+            --down: #f23645;
+            --up-bg: rgba(8, 153, 129, 0.15);
+            --down-bg: rgba(242, 54, 69, 0.15);
+            --accent: #2962ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-black); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+        .top-bar { min-height: 50px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 5px 15px; justify-content: space-between; flex-wrap: wrap; }
+        .controls { display: flex; gap: 8px; }
+        .toggle-btn { background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+
+        .collapsible { display: none; background: var(--bg-panel); border-bottom: 2px solid #000; height: 400px; overflow: hidden; }
+        .collapsible.active { display: block; }
+
+        .trade-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #000; border-bottom: 2px solid #000; }
+        .panel { background: var(--bg-panel); display: flex; flex-direction: column; overflow: hidden; }
+        
+        .ob-header-select { padding: 8px; background: #1e222d; border-bottom: 1px solid var(--border); }
+        .stock-search-input { width: 100%; background: var(--bg-black); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 4px; font-size: 13px; outline: none; }
+
+        .ob-table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; }
+        .ob-table th { font-size: 10px; color: var(--text-muted); padding: 5px 10px; text-align: right; border-bottom: 1px solid var(--border); }
+        .ob-table td { padding: 6px 10px; text-align: right; position: relative; }
+        .ob-table .ask { color: var(--down); }
+        .ob-table .bid { color: var(--up); }
+        
+        @keyframes flash-green { from { background: var(--up-bg); } to { background: transparent; } }
+        @keyframes flash-red { from { background: var(--down-bg); } to { background: transparent; } }
+        .flash-up { animation: flash-green 0.6s ease-out; }
+        .flash-down { animation: flash-red 0.6s ease-out; }
+
+        .order-form { padding: 12px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+        .side-btns { display: flex; gap: 6px; }
+        .side-btn { flex: 1; padding: 10px; border: none; cursor: pointer; font-weight: bold; background: #2a2e39; color: var(--text-muted); border-radius: 4px; font-size: 12px; }
+        .side-btn.buy.active { background: var(--up); color: white; }
+        .side-btn.sell.active { background: var(--down); color: white; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .input-field { background: var(--bg-black); border: 1px solid var(--border); padding: 10px; color: white; border-radius: 4px; font-size: 13px; width: 100%; }
+
+        .btn-execute { background: var(--accent); color: white; border: none; padding: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 5px; width: 100%; }
+        .history-panel { background: var(--bg-panel); flex: 1; overflow-y: auto; min-height: 200px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .data-table th { text-align: left; padding: 10px; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--bg-panel); position: sticky; top: 0; }
+        .data-table td { padding: 10px; border-bottom: 1px solid #1e222d; }
+
+        @media (max-width: 480px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        #screener-section {
+    height: 600px; /* အမြင့်ကို Fixed ပေးရပါမယ် */
+    max-height: 80vh; /* ဖုန်း screen နဲ့ အဆင်ပြေအောင် 80% အမြင့်ပေးထားတာပါ */
+    overflow: hidden !important; /* အပြင်ဘက် Scroll ကို ပိတ်ထားမှ အတွင်းက အလုပ်လုပ်မှာပါ */
+    display: none;
+    background-color: #061121;
+}
+
+#screener-section.active {
+    display: block;
+}
+
+.tradingview-widget-container {
+    height: 100% !important;
+    width: 100%;
+}
+
+/* Tab Navigation Styling */
+.screener-tabs {
+    display: flex;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    gap: 2px;
+}
+.screener-tab-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+.screener-tab-btn.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    background: rgba(41, 98, 255, 0.1);
+}
+
+/* 3. Trading Tools (Responsive Layout) */
+.trading-tools {
+    display: flex;
+    flex-direction: row; /* Computer မှာ ဘေးချင်းယှဉ်ပြမယ် */
+    width: 100%;
+    background: #1e2329;
+    border-top: 1px solid #2b3139;
+    border-bottom: 1px solid #2b3139;
+    flex-wrap: wrap; /* လိုအပ်ရင် အောက်ဆင်းပေးဖို့ */
+}
+
+/* ဖုန်း screen (768px ထက် ငယ်သွားတဲ့အခါ) */
+@media (max-width: 768px) {
+    .trading-tools {
+        flex-direction: column; /* အပေါ်အောက် ပြောင်းလိုက်မယ် */
+    }
+
+    #chart-container {
+        width: 100%;
+        min-height: 350px; /* ဖုန်းမှာ chart ကို နည်းနည်း ပိုမြင့်အောင် ထားပေးတာ ပိုကောင်းပါတယ် */
+        flex: none !important; /* flex: 2.5 ကို ဖုန်းမှာ ပိတ်လိုက်တာပါ */
+    }
+
+    .trading-side {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #2b3139; /* Chart နဲ့ Order Form ကြားမှာ မျဉ်းတားပေးတာပါ */
+    }
+}
+
+
+.fas.fa-bell, .fas.fa-gear {
+    font-size: 16px !important; /* Icon ဆိုဒ်ကို ကြီးအောင်လုပ်ခြင်း */
+}

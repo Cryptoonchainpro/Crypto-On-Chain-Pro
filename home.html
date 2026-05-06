@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Crypto On-Chain Pro - Buy & Sell Digital Assets In The Crypto On-Chain Pro </title>
+        <link rel="shortcut icon" href="./img/Logo.jpg" type="image/svg+xml">
+
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"> 
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link rel="stylesheet" href="lib/animate/animate.min.css"/>
+        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="home.css" rel="stylesheet">
+       
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+  // သင့်ရဲ့ Firebase Console ကနေရလာတဲ့ config ကို ဒီမှာ အစားထိုးပါ
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQ4uu3RzFI9upozRFfmsqpA_0ab3PxjSs",
+    authDomain: "crypto-onchain-pro.firebaseapp.com",
+    databaseURL: "https://crypto-onchain-pro-default-rtdb.firebaseio.com",
+    projectId: "crypto-onchain-pro",
+    storageBucket: "crypto-onchain-pro.firebasestorage.app",
+    messagingSenderId: "696320522112",
+    appId: "1:696320522112:web:fb09b5a4981fe2d3e6f365"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+    </head>
+
+    <body>
+        
+        <nav class="border-b border-gray-800 p-4 flex justify-between items-center bg-[#061121] sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue-700">
+        <img src="./img/Logo.jpg" class="w-full h-full object-cover">
+    </div>
+    <span class="text-base md:text-lg font-bold tracking-tighter text-white whitespace-nowrap" data-lang="logo">Crypto On-Chain Pro</span>
+    
+</div>
+
+        <div class="flex items-center gap-2 md:gap-4">
+
+            <a href="setting.html?tab=notifications" class="relative group">
+    <div class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition">
+        <i class="fas fa-bell text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+    <span id="noti-badge" class="hidden absolute top-1.5 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#061121]"></span>
+</a>
+
+<div onclick="parent.switchToSetting()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition cursor-pointer group">
+        <i class="fas fa-gear text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+    
+            </div>
+        </div>
+    </nav>
+
+<!-- Market Overview Section Start -->
+ <section class="market-section" style="background: #0b1426; padding: 60px 0;">
+    <div class="container">
+        
+        <div class="market-header mb-5" style="text-align: center;">
+    <h3 class="text-white" style="margin-bottom: 8px; font-size: 28px; font-weight: 700;">One place for all markets –</h3>
+    <h3 class="text-white" style="opacity: 0.8; font-size: 20px; font-weight: 400;">Stay on top of Crypto and Stocks Markets</h3>
+    
+    <div class="mt-3" style="display: flex; justify-content: center;">
+        <a href="javascript:void(0)" 
+            onclick="window.parent.navigate('market', window.parent.document.querySelectorAll('.nav-item')[1])" 
+            style="color: #3b82f6; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: 0.3s;" 
+            onmouseover="this.style.opacity='0.8'" 
+            onmouseout="this.style.opacity='1'">
+                View Live Prices 
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+</div>
+
+        <div class="tab-buttons mb-4" style="display: flex; gap: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+            <button onclick="openTab('crypto-market')" class="tab-btn active" id="crypto-tab" style="background: none; border: none; color: #fff; font-size: 18px; font-weight: 600; cursor: pointer; padding: 5px 0; position: relative; transition: 0.3s;">Crypto</button>
+            <button onclick="openTab('stock-market')" class="tab-btn" id="stock-tab" style="background: none; border: none; color: #94a3b8; font-size: 18px; font-weight: 600; cursor: pointer; padding: 5px 0; transition: 0.3s;">Stocks</button>
+        </div>
+
+        <div id="crypto-market" class="tab-content" style="display: block;">
+            <div class="carousel-container">
+                <div id="topCards" class="d-flex flex-wrap gap-3 mb-4"></div>
+            </div>
+            <div class="table-container">
+                <table id="marketTable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Symbol & Name</th> <th>Price</th>
+                            <th style="text-align: center;">Change %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="marketBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="stock-market" class="tab-content" style="display: none;">
+            <div class="carousel-container">
+                <div id="stock-top-cards" class="d-flex flex-wrap gap-3 mb-4"></div>
+            </div>
+            <div class="table-container">
+                <table id="stockTable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Symbol & Name</th> <th>Price</th>
+                            <th style="text-align: center;">Change %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Stocks Overview Section End -->
+
+  <!-- About Section Start -->
+<div class="container-fluid py-5" style="background: #0b1426;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="card h-100 text-center p-4" style="background: #061121b4; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
+                    <i class="fas fa-globe fa-3x text-blue mb-3"></i>
+                    <h4 class="text-white">150m+ users globally</h4>
+                    <p class="text-muted mb-0">Trusted by investors around the world since 2016</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="card h-100 text-center p-4" style="background: #061121; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
+                    <i class="fas fa-check-circle fa-3x text-Blue mb-3"></i>
+                    <h4 class="text-white">Sign up in minutes</h4>
+                    <p class="text-muted mb-0">Set up your account and begin trading in a few steps</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="card h-100 text-center p-4" style="background: #061121; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
+                    <i class="fas fa-fingerprint fa-3x text-blue mb-3"></i>
+                    <h4 class="text-white">Zero-fee deposits</h4>
+                    <p class="text-muted mb-0">Fund your wallet at no cost with major fiat currencies</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About Section End-->
+
+        <!-- Hero page -->
+    <section class="hero gridSection" style="background: #0b1426;">
+        <div class="sectionDesc" style="background: #0b1426;">
+            <h1 class="headline">
+                Most popular way to trade <span class="cryptoText">CRYPTO.</span>
+            </h1>
+            <p class="sub-headline">
+                You can see a record of all your transactions 
+                anytime you want and never have to worry about 
+                someone erasing or stealing your money!
+            </p>
+            <div class="btnContainer">
+                <a href="javascript:void(0)" onclick="window.parent.navigate('account', window.parent.document.querySelector('.nav-item:last-child'))" class="btn btn-primary">Deposit Now</a>
+            </div>
+        </div>
+        <div class="sectionPic bouncepic" id="sectionPic">
+            <img src="./img/hero-image.png" alt="">
+        </div>
+    </section>
+
+    <!-- Hero Page End-->
+      
+    <!-- Processes -->
+    <section class="gridSection">
+        <div class="sectionDesc processessDesc">
+            <h1 class="sectionHeader">Chain Process</h1>
+            <p class="sectionPara">We do not charge any fees and we do not require 
+              any registration. You keep your privacy and your 
+              coins.
+            </p>
+            <div class="eachProcesses">
+                <img src="./img/handshake-icon-white-line.svg" alt="handshake">
+                <div class="eachprocessesPara">
+                    <h1 class="processTitle">Trading</h1>
+                    <p>
+                        The act of speculating on cryptocurrency price movements 
+                        via a CFD trading account, or buying and selling.
+                    </p>
+                </div>
+            </div>
+            <div class="eachProcesses">
+                <img src="./img/cart-icon-white-line.svg" alt="handshake">
+                <div class="eachprocessesPara">
+                    <h1 class="processTitle">Buying</h1>
+                    <p>
+                        Best cryptocurrency exchanges currently purchase Bitcoin, 
+                        Ethereum, and Litecoin other coins and tokens on the platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="sectionPic bouncepic processesPic" id="sectionPic">
+            <img src="./img/chain-process-img.png" alt="">
+        </div>
+    </section>
+
+    <div class="container-fluid py-5" style="background: #0b1426; border-top: 1px solid rgba(255,255,255,0.05);">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center justify-content-center text-center">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <img src="./img/Logo.jpg" width="45" height="45" class="rounded-circle me-3">
+                    <h5 class="text-white mb-0" style="letter-spacing: 2px; font-weight: 500; text-transform: uppercase;">Advanced Trading</h5>
+                </div>
+                
+                <h1 class="display-3 text-white mb-4" style="font-weight: 800;">Power meets precision</h1>
+                <p class="text-white-50 mb-5 fs-4">Trade with institutional-grade speed and deeper liquidity</p>
+                
+                <div class="d-flex justify-content-center flex-wrap gap-4 mb-5">
+                    <a href="javascript:void(0)" onclick="window.parent.navigate('account', window.parent.document.querySelector('.nav-item:last-child'))" class="btn btn-primary rounded-pill py-3 px-5 d-flex align-items-center">
+                        Deposit Now <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-light rounded-pill py-3 px-5 d-flex align-items-center">
+                        <i class="fas fa-download me-2"></i> Get the app
+                    </a>
+                </div>
+
+               <div class="mt-4 wow zoomIn" data-wow-delay="0.3s" style="height: 600px; width: 100%; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
+                        <div id="tradingview_chart" style="height: 100%; width: 100%;"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                        <script type="text/javascript">
+                        new TradingView.widget(
+                        {
+                            "autosize": true,
+                            "symbol": "BINANCE:BTCUSDT",
+                            "interval": "D",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#f1f3f6",
+                            "enable_publishing": false,
+                            "hide_side_toolbar": false,
+                            "allow_symbol_change": true,
+                            "container_id": "tradingview_chart"
+                        }
+                        );
+                        </script>
+                    </div>
+                    </div>
+
+            </div>
+        </div>
+
+        <div class="row g-4 mt-5 pt-4">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="p-2">
+                    <h4 class="text-white mb-3" style="font-weight: 700;">Ultra-low latency</h4>
+                    <p class="text-white-50">Competitive pricing across multiple trading pairs</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="p-2">
+                    <h4 class="text-white mb-3" style="font-weight: 700;">Competitive fees</h4>
+                    <p class="text-white-50">Maker and taker fees as low as 0.08% / 0.18% - trade more, pay less</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="p-2">
+                    <h4 class="text-white mb-3" style="font-weight: 700;">Deeper liquidity</h4>
+                    <p class="text-white-50">Order-book depth across 400+ markets for tighter spreads</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="p-2">
+                    <h4 class="text-white mb-3" style="font-weight: 700;">Pro-grade reliability</h4>
+                    <p class="text-white-50">Trusted global infrastructure delivering 99.99% uptime worldwide</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- 
+        - #APP
+      -->
+
+      <section class="section app" aria-label="app" data-section>
+        <div class="container">
+
+          <div class="app-content">
+
+            <h2 class="h2 section-title text-white">Free Your Money & Invest With Confident</h2>
+
+            <p class="section-text">
+              With Cryptor Trade, you can be sure your trading skills are matched
+            </p>
+
+            <ul class="section-list">
+
+              <li class="section-item">
+                <div class="title-wrapper">
+                  <ion-icon name="checkmark-circle" aria-hidden="true"></ion-icon>
+
+                  <h3 class="h3 item-title text-white">Buy, Sell, And Trade On The Go</h3>
+                </div>
+
+                <p class="item-text">
+                  Manage Your Holdings From Your Mobile Decive
+                </p>
+              </li>
+
+              <li class="section-item">
+                <div class="title-wrapper">
+                  <ion-icon name="checkmark-circle" aria-hidden="true"></ion-icon>
+
+                  <h3 class="h3 item-title text-white">Take Control Of Your Wealth</h3>
+                </div>
+
+                <p class="item-text">
+                  Rest Assured You (And Only You) Have Access To Your Funds
+                </p>
+              </li>
+
+            </ul>
+
+
+          </div>
+
+          <div class="app-banner">
+            <img src="./img/app-banner.png" loading="lazy" alt="app banner"
+              class="w-100">
+
+            
+          </div>
+
+        </div>
+      </section>
+
+      <!-- App End -->
+
+        <!-- FAQs Start -->
+        <div class="container-fluid faq-section pb-5" style="background: #0b1426;">
+    <div class="container pb-5 overflow-hidden">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-white">FAQs</h4>
+            <h1 class="display-5 mb-4 text-white">Frequently Asked Questions</h1>
+            <p class="mb-0 text-white-50">We provide a range of consulting services including business strategy, financial advisory, marketing, HR consulting, supply chain optimization, and more, tailored to meet your specific needs.</p>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="accordion accordion-flush rounded p-md-5 p-3" id="accordionFlushSection" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    
+                    <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                What is crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+                              Cryptocurrency is a digital or virtual currency that operates on distributed ledger technology called a blockchain and uses cryptography for security. It is decentralized and operates independently of a central bank.
+Unlike traditional currencies, cryptocurrencies are not backed by a physical commodity or government, and their value is determined by market demand and supply. Cryptocurrencies can be used to buy goods and services, transfer funds, and trade in markets. Popular cryptocurrencies include Bitcoin, Ethereum, Litecoin, Ripple, and Cronos.
+Many cryptocurrencies, like Bitcoin, are created through a process called mining, which involves solving complex mathematical equations to validate and record transactions on a blockchain. This mechanism is also called Proof of Work (PoW). Another consensus mechanism that has increased in popularity — as it is more energy efficient — is Proof of Stake (PoS). Instead of mining, PoS relies on network participants validating transactions. Ethereum, the second-largest cryptocurrency, uses this consensus mechanism.
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingTwo">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                Where to buy crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+                               There are several ways to buy cryptocurrencies, including:
+
+Brokerage services: Crypto brokers allow users to simply buy and sell cryptocurrencies. A popular example is the Crypto.com App, trusted by over 150 million users. It is available at the Apple Store and on Google Play.
+
+Cryptocurrency exchanges: These are online platforms where users can buy, sell, and trade cryptocurrencies using fiat currency or other cryptocurrencies. They offer more complex functions compared to a crypto brokerage, adding trading instruments like crypto derivatives.
+
+Peer-to-peer (P2P) marketplaces: These are platforms where buyers and sellers can directly trade cryptocurrencies without the involvement of a third-party exchange. This is also known as DeFi, short for decentralized finance. Multiple P2P crypto marketplaces can be accessed all in one app via the Crypto.com Onchain.
+
+It is important to perform proper research and choose a reputable platform to buy cryptocurrencies. For instance, Crypto.com holds the highest security rating in the industry. In addition, it is recommended to store cryptocurrencies securely in a wallet like the Crypto.com App or Crypto.com Onchain.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                How to buy crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+                                To buy crypto, follow these general steps:
+
+Choose a crypto platform to use, like the Crypto.com App.
+
+Create an account on the chosen platform by providing personal information and ID verification, also known as ‘Know Your Customer’ (KYC) procedures.
+
+Deposit fiat currency or another cryptocurrency into the newly created account. The Crypto.com App supports bank transfers, credit cards, debit cards, and cryptocurrency transfers to buy crypto, depending on region.
+
+Navigate to the ‘Buy’ section of the Crypto.com App and select the crypto to buy.
+
+Enter the amount of cryptocurrency to buy and confirm the transaction.
+
+The crypto will be deposited into the account. From here, it can be transferred to other crypto wallets or converted back to fiat currency and paid out to a bank account.
+
+It is important to perform proper research and choose a reputable platform to buy cryptocurrencies. For instance, Crypto.com holds the highest security rating in the industry. In addition, it is recommended to store cryptocurrencies securely in a wallet like the Crypto.com App or Crypto.com Onchain.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingFour">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                How to trade crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+To trade cryptocurrency, follow these general steps:
+
+Choose a cryptocurrency exchange that supports trading in your jurisdiction.
+
+Create an account on the chosen platform and perform ID verification, known as KYC ('Know Your Customer').
+
+Deposit funds into the newly created account using a supported payment method.
+
+Navigate to the trading section of the platform and select the cryptocurrency pair to trade.
+
+Choose whether to buy or sell the cryptocurrency, and enter the amount to trade.
+
+Set the preferred price and order type. There are several types of orders, including market orders, limit orders, stop orders, and crypto options, which allow users to buy or sell at a specific price or under certain conditions.
+
+Submit the trade order and wait for it to be executed. Depending on market conditions, the trade may be filled immediately, or it may take time to be filled.
+
+Monitor trades and adjust strategies as necessary.
+
+It is crucial to note that trading cryptocurrency carries risk, and it is important to trade only what you can afford to lose.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingFive">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                                How to earn crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+There are several ways to earn cryptocurrency, including:
+
+Mining: Cryptocurrency mining involves using specialized computer hardware to solve complex mathematical equations that validate transactions on a blockchain network. Successful miners are rewarded with newly minted cryptocurrency for their efforts.
+
+Staking/Lockups: Staking and lockups involve holding or locking up a certain amount of cryptocurrency in a wallet or on a platform to support the operations of the blockchain network. Stakers are rewarded with new cryptocurrency as a form of interest for their support.
+
+Trading: Trading cryptocurrency involves buying and selling cryptocurrencies on exchanges or other trading platforms. Those who have a good understanding of market trends and are able to make informed trading decisions can earn profits through trading.
+
+Airdrops: Airdrops are free distributions of cryptocurrency to users who meet certain criteria or participate in promotional activities.
+
+Crypto Projects: Some blockchain projects offer rewards or bounties for users who contribute to their development or community. This can include activities like bug bounties, testing, or content creation.
+
+It's important to note that each method of earning cryptocurrency carries its own risks and rewards. It is recommended to carefully research cryptocurrencies and understand the process before buying. Learn more about the crypto market at Crypto.com University.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-transparent border-bottom-0">
+                        <h2 class="accordion-header" id="flush-headingSix">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                                How to earn rewards on crypto?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+                               Users can earn rewards on their cryptocurrency holdings through various products that offer rewards-bearing accounts or lending services. Here are some ways to earn rewards on cryptocurrency:
+
+The Crypto.com App, and Crypto.com Onchain offer different ways to earn rewards on crypto.
+
+Create an account on the chosen platform and deposit cryptocurrency holdings into the rewards account.
+
+Depending on the platform, users may earn rewards through lending their cryptocurrency to other users or by locking up their cryptocurrency for a period of time.
+
+Some products offer fixed reward rates (e.g., the Crypto.com Visa Card), while others may offer variable rates that depend on market conditions (e.g., the 'Earn' feature in the Crypto.com Onchain).
+
+Monitor rewards and adjust strategies as necessary.
+
+It's important to note that earning interest and rewards on cryptocurrency carries risks, including fluctuations in market conditions that may affect interest rates. Make sure to carefully research and understand terms and conditions before depositing cryptocurrency.
+                            </div>
+                        </div>
+                    </div>
+
+                                        <div class="accordion-item bg-transparent border-bottom border-secondary">
+                        <h2 class="accordion-header" id="flush-headingFive">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+Have more questions? Contact Us
+
+
+                            </button>
+                        </h2>
+                        <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
+                            <div class="accordion-body text-white-50">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- FAQs End -->
+
+
+           <!-- Start-->
+
+       <div class="container-fluid py-5" style=" background: #0b1426; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="p-4 p-md-5" style="border-radius: 15px;">
+                    <p class="text-white-50 small mb-4 text-center" style="line-height: 1.8;">
+                        The purpose of this website is solely to display information regarding the products and services available on the Crypto.com App. It is not intended to offer access to any of such products and services. You may obtain access to such products and services on the Crypto.com App.
+                    </p>
+                    <p class="text-white-50 small mb-0 text-center" style="line-height: 1.8;">
+                        Please note that the availability of the products and services on the Crypto.com App is subject to jurisdictional limitations. Crypto.com may not offer certain products, features and/or services on the Crypto.com App in certain jurisdictions due to potential or actual regulatory restrictions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+       <!-- End -->
+
+       <!-- News Start -->
+
+      <section class="gridSection">
+        <div class="sectionDesc newsletterDesc">
+            <h1 class="sectionHeader">Subscribe news!</h1>
+            <p class="sectionPara">
+                This is where crypto news websites come in handy and stay up-to-date this sphere.
+            </p>
+            <form action="#" class="newsletter">
+                <input type="email" name="" id="newsletter" placeholder="Enter your email">
+                <button type="submit" class="btn primaryBtn">Subscribe</button>
+            </form>
+        </div>
+        <div class="sectionPic bouncepic newsletterPic">
+            <img src="./img/newsletter.png" alt="">
+        </div>
+    </section>
+
+    <!-- News End-->
+
+      <div id="chat-popup" class="chat-popup">
+    <div class="chat-header">
+        <div class="user-info">
+            <img id="chat-user-img" src="./img/Logo.jpg" alt="Profile" class="chat-profile-img">
+            <div>
+                <div id="chat-user-name" class="chat-user-name">---</div>
+                <div id="chat-user-id" class="chat-user-id">ID: ---</div>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="close-chat"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div id="chat-welcome" class="chat-body">
+        <div class="welcome-msg">
+            <h5>Welcome to Crypto On-Chain Pro</h5>
+        </div>
+        <div class="faq-section">
+            <p onclick="faqReply('Deposit Address')">• Deposit Address</p>
+            <p onclick="faqReply('How to deposit?')">• How to deposit?</p>
+            <p onclick="faqReply('How to buy crypto?')">• How to buy crypto?</p>
+            <p onclick="faqReply('How to trade crypto?')">• How to trade crypto?</p>
+        </div>
+        <button class="start-asking-btn" onclick="startChatting()">Start Asking</button>
+    </div>
+
+    <div id="chat-messages-area" class="chat-body" style="display: none;">
+        <div id="chat-logs" class="chat-logs"></div>
+        <div class="chat-input-area">
+            <textarea id="user-msg-input" placeholder="Type a message..." rows="1" oninput="autoHeight(this)"></textarea>
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<button class="chat-float-btn" onclick="toggleChat()">
+    <i class="fas fa-comment-dots"></i>
+</button>
+
+<div id="copy-toast" style="display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: rgba(0, 255, 136, 0.9); color: #061121; padding: 10px 20px; border-radius: 30px; font-weight: bold; z-index: 10000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 14px;">
+    <i class="fas fa-check-circle"></i> Address Copied!
+</div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/lightbox/js/lightbox.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        
+
+        <!-- Template Javascript -->
+         <script src="auth-check.js"></script>
+        <script src="home1.js"></script>
+        <script src="home.js"></script>
+        <script src="notification.js"></script>
+    </body>
+
+</html>

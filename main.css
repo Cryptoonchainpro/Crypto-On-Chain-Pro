@@ -1,0 +1,18 @@
+.glass-card { 
+    background: var(--glass-bg); 
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(255,255,255,0.05); 
+    border-radius: 16px; 
+    position: relative; /* relative ထည့်ပါ */
+    z-index: 10;
+}
+.sparkline { 
+    height: 50px; 
+    width: 100%; 
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    opacity: 0.2; 
+    pointer-events: none; 
+    z-index: -1; /* စာသားရဲ့အနောက်ရောက်အောင် -1 ထားပါ */
+}

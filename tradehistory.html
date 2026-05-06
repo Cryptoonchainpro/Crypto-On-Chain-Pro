@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto On-Chain Pro - Transaction</title>
+    <link rel="shortcut icon" href="./img/Logo.jpg" type="image/svg+xml">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="tradehistory.css">
+
+    
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+  // သင့်ရဲ့ Firebase Console ကနေရလာတဲ့ config ကို ဒီမှာ အစားထိုးပါ
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQ4uu3RzFI9upozRFfmsqpA_0ab3PxjSs",
+    authDomain: "crypto-onchain-pro.firebaseapp.com",
+    databaseURL: "https://crypto-onchain-pro-default-rtdb.firebaseio.com",
+    projectId: "crypto-onchain-pro",
+    storageBucket: "crypto-onchain-pro.firebasestorage.app",
+    messagingSenderId: "696320522112",
+    appId: "1:696320522112:web:fb09b5a4981fe2d3e6f365"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+</head>
+<body class="min-h-screen">
+    <nav class="border-b border-gray-800 p-4 flex justify-between items-center bg-[#061121] sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue-700">
+        <img src="./img/Logo.jpg" class="w-full h-full object-cover">
+    </div>
+    <span class="text-base md:text-lg font-bold tracking-tighter text-white whitespace-nowrap" data-lang="logo">Crypto On-Chain Pro</span>
+</div>
+
+            <div class="flex items-center gap-2 md:gap-4 text-gray-400">
+
+                <a href="setting.html?tab=notifications" class="relative group">
+    <div class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition">
+        <i class="fas fa-bell text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+    <span id="noti-badge" class="hidden absolute top-1.5 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#061121]"></span>
+</a>
+
+               <div onclick="parent.switchToSetting()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 transition cursor-pointer group">
+        <i class="fas fa-gear text-gray-400 group-hover:text-blue-500"></i>
+    </div>
+            </div>
+        </div>
+    </nav>
+
+   <main class="max-w-7xl mx-auto md:p-6">
+    <div class="portfolio-card bg-[#061121]">
+        <div class="p-4 border-b border-gray-800/30">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                <div class="font-bold text-lg text-white w-full md:w-auto text-left">Trade History</div>
+                
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                        <input type="text" id="historySearch" onkeyup="searchHistory()" placeholder="Search here..." 
+                            class="bg-black/20 border border-gray-700 rounded-lg py-1.5 pl-9 pr-4 text-[13px] focus:outline-none focus:border-blue-500 w-full text-white">
+                    </div>
+                    <div class="relative">
+                        <input type="date" id="dateFilter" onchange="searchHistory()" 
+                            class="bg-black/40 border border-gray-600 rounded-lg py-1.5 px-2 text-[11px] focus:outline-none focus:border-blue-500 text-white min-w-[110px]">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-8 overflow-x-auto pb-1 scrollbar-hide border-b border-gray-800/50">
+                <div onclick="switchTab('crypto-future', 'future_trade_History', this)" 
+                     class="tab-item active cursor-pointer pb-3 text-sm font-bold whitespace-nowrap text-blue-500 border-b-2 border-blue-500 transition-all duration-300" 
+                     id="tab-crypto-future">Crypto Future</div>
+                
+                <div onclick="switchTab('crypto-spot', 'spot-trade-history', this)" 
+                     class="tab-item cursor-pointer pb-3 text-sm font-bold whitespace-nowrap text-gray-500 border-b-2 border-transparent hover:text-gray-300 transition-all duration-300" 
+                     id="tab-crypto-spot">Crypto Spot</div>
+                
+                <div onclick="switchTab('stock-future', 'Stock_trade_History', this)" 
+                     class="tab-item cursor-pointer pb-3 text-sm font-bold whitespace-nowrap text-gray-500 border-b-2 border-transparent hover:text-gray-300 transition-all duration-300" 
+                     id="tab-stock-future">Stock Future</div>
+                
+                <div onclick="switchTab('stock-spot', 'spot-stock-trade-history', this)" 
+                     class="tab-item cursor-pointer pb-3 text-sm font-bold whitespace-nowrap text-gray-500 border-b-2 border-transparent hover:text-gray-300 transition-all duration-300" 
+                     id="tab-stock-spot">Stock Spot</div>
+            </div>
+        </div>
+        
+        <div id="history-card-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:p-4 min-h-[400px]"></div>
+    </div>
+</main>
+
+    <div id="details-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[110] p-4 backdrop-blur-sm">
+    <div class="bg-[var(--card-bg)] w-full max-w-md rounded-2xl p-6 border border-gray-700 shadow-2xl animate-fadeIn">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-blue-500">Transaction Details</h3>
+            <button onclick="closeDetailsModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="details-content" class="space-y-4 font-mono text-sm">
+            </div>
+        <button onclick="closeDetailsModal()" class="w-full mt-8 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500 transition-all">Close</button>
+    </div>
+</div>
+
+
+    <script src="auth-check.js"></script>
+    <script src="tradehistory.js"></script>
+    <script src="notification.js"></script>
+    
+</body>
+</html>
